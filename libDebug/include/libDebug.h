@@ -66,6 +66,15 @@
 
 #endif /* OS_BSD */
 
+#ifdef OS_DARWIN
+
+#ifndef INCLUDED_darwin_x86_h
+#include "../arch/ix86/include/darwin-x86.h"
+#define INCLUDED_darwin_x86_h
+#endif
+
+#endif /* OS_DARWIN */
+
 #ifndef INCLUDED_sub_x86_h
 #include "../arch/ix86/include/sub-x86.h"
 #define INCLUDED_sub_x86_h

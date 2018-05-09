@@ -16,6 +16,12 @@
 
 #define OFF_MAXLINE     1024
 
+#if defined(OS_DARWIN)
+
+// FIXME
+
+#else
+
 #ifndef INCLUDED_libOFF_fmt_aout_h
 #include "fmt_aout.h"       /* struct aoutWorkspace */
 #define INCLUDED_libOFF_fmt_aout_h
@@ -24,6 +30,8 @@
 #ifndef INCLUDED_libOFF_fmt_elf_h
 #include "fmt_elf.h"        /* struct elfWorkspace */
 #define INCLUDED_libOFF_fmt_elf_h
+#endif
+
 #endif
 
 #ifndef INCLUDED_libOFF_version_h

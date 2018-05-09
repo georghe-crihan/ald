@@ -17,3 +17,7 @@
 
 /* Define if you are running OpenBSD */
 #undef OS_OPENBSD
+
+/* Define if you are running Darwin/OS X */
+#undef OS_DARWIN
+

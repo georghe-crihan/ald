@@ -38,6 +38,13 @@
 #  define INCLUDED_machine_reg_h
 # endif
 
+#elif OS_DARWIN
+
+# ifndef INCLUDED_mach_mach_h
+#  include <mach/mach.h>
+#  define INCLUDED_mach_mach_h
+# endif
+
 #endif
 
 struct x86RegInfo
@@ -193,6 +200,10 @@ struct x86RegisterContents
 
   struct reg Regs;
   struct fpreg fpRegs;
+
+#elif OS_DARWIN
+
+  x86_thread_state_t state;
 
 #endif
 

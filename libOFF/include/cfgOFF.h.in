@@ -68,3 +68,7 @@
 
 /* Define to `unsigned char' if <sys/types.h> does not define. */
 #undef uint8_t
+
+/* Define if Darwin/OS X */
+#undef OS_DARWIN
+

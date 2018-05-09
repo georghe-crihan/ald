@@ -17,8 +17,14 @@
 #include <string.h>
 #include <sys/types.h>
 
+#include "cfgOFF.h"
+
+#if defined(OS_DARWIN)
+// FIXME
+#else
 #include "fmt_aout.h"
 #include "fmt_elf.h"
+#endif
 #include "libOFF.h"
 
 char *EndianTypeOFF[] = {
@@ -53,6 +59,9 @@ initOFF()
 
   memset(ws, '\0', sizeof(struct offWorkspace));
 
+#if defined(OS_DARWIN)
+// FIXME
+#else
   /*
    * Initialize a.out workspace
    */
@@ -72,6 +81,7 @@ initOFF()
     termOFF(ws);
     return (0);
   }
+#endif
 
   /*
    * Determine the endianness of this platform
@@ -101,11 +111,17 @@ termOFF(struct offWorkspace *ws)
   if (!ws)
     return;
 
+#if defined(OS_DARWIN)
+
+// FIXME
+
+#else
   if (ws->aoutWorkspace_p)
     termAOUT(ws->aoutWorkspace_p);
 
   if (ws->elfWorkspace_p)
     termELF(ws->elfWorkspace_p);
+#endif
 
   free(ws);
 } /* termOFF() */
@@ -135,6 +151,9 @@ identifyOFF(struct offWorkspace *ws, void *ptr, size_t size,
 
 {
   int ret;
+#if defined(OS_DARWIN)
+// FIXME
+#else
   struct aoutParameters aoutParams;
   struct elfParameters elfParams;
 
@@ -186,6 +205,7 @@ identifyOFF(struct offWorkspace *ws, void *ptr, size_t size,
 
     return (OFF_TYPE_AOUT);
   }
+#endif
 
   return (OFF_TYPE_UNKNOWN);
 } /* identifyOFF() */
@@ -206,13 +226,16 @@ loadSymbolsOFF(struct offWorkspace *ws)
 {
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       return (loadSymbolsELF(ws->elfWorkspace_p));
 
       break;
     }
-
+#endif
     default:
     {
       break;
@@ -238,13 +261,16 @@ unloadSymbolsOFF(struct offWorkspace *ws)
 {
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       unloadSymbolsELF(ws->elfWorkspace_p);
 
       break;
     }
-
+#endif
     default:
     {
       break;
@@ -274,13 +300,20 @@ findSectionOFF(struct offWorkspace *ws, char *name,
 
 {
   int ret;
+#if defined(OS_DARWIN)
+// FIXME
+#else
   struct elfSectionInfo elfSecInfo;
   struct aoutSectionInfo aoutSecInfo;
+#endif
 
   ret = 0;
 
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       ret = findSectionELF(ws->elfWorkspace_p,
@@ -314,7 +347,7 @@ findSectionOFF(struct offWorkspace *ws, char *name,
         secinfo->offset = aoutSecInfo.offset;
       }
     } /* case OFF_TYPE_AOUT */
-
+#endif
     default:
     {
       break;
@@ -346,12 +379,19 @@ findSymbolOFF(struct offWorkspace *ws, char *name,
 
 {
   int ret;
+#if defined(OS_DARWIN)
+// FIXME
+#else
   struct elfSymbolInfo elfSymInfo;
+#endif
 
   ret = 0;
 
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       ret = findSymbolELF(ws->elfWorkspace_p,
@@ -369,7 +409,7 @@ findSymbolOFF(struct offWorkspace *ws, char *name,
 
       break;
     }
-
+#endif
     default:
     {
       break;
@@ -402,6 +442,9 @@ printHeaderOFF(struct offWorkspace *ws,
 {
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       printHeaderELF(ws->elfWorkspace_p, callback, args);
@@ -415,7 +458,7 @@ printHeaderOFF(struct offWorkspace *ws,
 
       break;
     }
-
+#endif
     default:
     {
       break;
@@ -449,6 +492,9 @@ printSectionInfoOFF(struct offWorkspace *ws,
 {
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       printSectionInfoELF(ws->elfWorkspace_p, sname, callback, args);
@@ -462,7 +508,7 @@ printSectionInfoOFF(struct offWorkspace *ws,
 
       break;
     }
-
+#endif
     default:
     {
       break;
@@ -498,13 +544,16 @@ printSymbolsOFF(struct offWorkspace *ws,
 {
   switch (ws->fileType)
   {
+#if defined(OS_DARWIN)
+// FIXME
+#else
     case OFF_TYPE_ELF:
     {
       printSymbolsELF(ws->elfWorkspace_p, name, callback, args);
 
       break;
     }
-
+#endif
     default:
     {
       break;

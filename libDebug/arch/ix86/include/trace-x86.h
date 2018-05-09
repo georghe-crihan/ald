@@ -47,6 +47,14 @@
 #define PtraceWrite(pid, addr, data) \
   ptrace(PT_WRITE_D, (pid), (addr), (data))
 
+#elif defined(OS_DARWIN)
+
+// FIXME!!!!
+
+#define PtraceRead(pid,addr, data) (0)
+
+#define PtraceWrite(pid, addr, data) (0)
+
 #else
 
 # error No supported operating system found

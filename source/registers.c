@@ -169,7 +169,7 @@ displayRegsNormalCallback(struct debugRegisterInfo *regInfo, void *args)
   {
     sprintf(cargs->scratch,
             "0x%0*lX",
-            regInfo->size << 1,
+            (unsigned)regInfo->size << 1,
             regInfo->value);
 
     Print(cargs->main_p,

@@ -82,6 +82,7 @@ x86execDebug(struct debugWorkspace *ws)
     /*
      * Child: allow parent to trace us
      */
+    // FIXME See here: https://www.spaceflint.com/?p=150
     if (ptrace(PT_TRACE_ME, 0, 0, 0) != 0)
       exit(0);
 
@@ -369,10 +370,64 @@ x86DoSingleStep(struct debugWorkspace *ws, int *data)
   int err;
 
   assert(ws->pid != NOPID);
+#if defined(OS_DARWIN)
+#ifdef FIXME
+InferiorHandle *inferior = handle->inferior;
+	thread_array_t threads;
+	mach_msg_type_number_t count;
+	kern_return_t err;
+	INFERIOR_REGS_TYPE regs;
+	int i;
+	
+	/* 
+	 * PT_STEP seems to be badly broken on OS X in multi-threaded environments.
+	 * When using it on anything but the main thread, it kernel panics.
+	 * This can be fixed by disabling all other threads. But then, still it will not
+	 * perform the step. This can be fixed by manually setting the trap flag of that thread.
+	 * All of these have to be reset when continuing normal operation (ie in server_ptrace_continue).  
+	 */	
+	
+	err = task_threads(inferior->os.task, &threads, &count);
+	if (err) {
+		g_message (G_STRLOC ": task_threads failed: %d", err);
+		return COMMAND_ERROR_UNKNOWN_ERROR;
+	}
 
+	for(i=0; i<count; i++)
+		thread_suspend (threads[i]);
+
+	struct thread_basic_info info;
+	unsigned int info_count = THREAD_BASIC_INFO_COUNT;
+	thread_info (inferior->os.thread, THREAD_BASIC_INFO, (thread_info_t) &info, &info_count);
+	while(info.suspend_count > 0) {
+		info.suspend_count--;
+		thread_resume (inferior->os.thread);
+	}
+	g_stepping_thread = inferior->os.thread;
+	g_stepping_task = inferior->os.task;
+	
+	_server_ptrace_get_registers(inferior, &regs);
+	regs.eflags |= 0x100UL;
+	_server_ptrace_set_registers(inferior, &regs);
+
+	errno = 0;
+	inferior->stepping = TRUE;
+
+        // FIXME See here: https://www.spaceflint.com/?p=150
+	if (ptrace (PT_STEP, inferior->pid, (caddr_t) 1, inferior->last_signal))
+		return _server_ptrace_check_errno (inferior);
+
+	err = vm_deallocate (mach_task_self(), (vm_address_t) threads, (count * sizeof (int)));
+	if (err)
+		g_message (G_STRLOC ": vm_deallocate failed: %d", err);
+	
+	return COMMAND_ERROR_NONE;
+}
+#endif
+#else
   if (ptrace(PT_STEP, ws->pid, CONTADDR, ws->lastSignal) != 0)
     return (0); /* something went wrong */
-
+#endif
   /*
    * Clear the last signal
    */
@@ -454,10 +509,13 @@ x86DoContinue(struct debugWorkspace *ws, int *data)
      * Enable all breakpoints
      */
     enableBreakpoints(ws);
-
+#if defined(OS_DARWIN)
+// FIXME See here: https://www.spaceflint.com/?p=150
+#else
     /*fprintf(stderr, "lastsig = %d\n", ws->lastSignal);*/
     if (ptrace(PT_CONTINUE, ws->pid, CONTADDR, ws->lastSignal) != 0)
       return (0); /* something went wrong */
+#endif
 
     /*
      * Wait for child to stop
@@ -749,7 +807,7 @@ x86attachDebug(struct debugWorkspace *ws, int pid)
 {
   int err;
   int waitval;
-
+// FIXME See here: https://www.spaceflint.com/?p=150
   if (ptrace(PT_ATTACH, pid, 0, 0) != 0)
     return (0); /* something went wrong */
 
@@ -798,7 +856,7 @@ x86detachDebug(struct debugWorkspace *ws)
 
   if (!dbIsAttached(ws))
     return (-1);
-
+// FIXME see here: https://www.spaceflint.com/?p=150
   if (ptrace(PT_DETACH, ws->pid, 0, 0) != 0)
     return (0); /* something went wrong */
 
@@ -830,6 +888,7 @@ x86killDebug(struct debugWorkspace *ws)
 
   if (ws->pid != NOPID)
   {
+    // FIXME See here: https://www.spaceflint.com/?p=150
     ret = ptrace(PT_KILL, ws->pid, 0, 0);
 
     if (ret == 0)
@@ -996,7 +1055,7 @@ x86dumpMemoryDebug(struct debugWorkspace *ws, unsigned char **buf,
   if ((bytes + 1) == 0)
     return (0); /* integer overflow */
 
-  *buf = (char *) malloc(bytes + 1);
+  *buf = (unsigned char *) malloc(bytes + 1);
   if (*buf == NULL)
     return (0);
 
