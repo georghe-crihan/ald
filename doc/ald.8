@@ -1,0 +1,85 @@
+.\" $Id: ald.8,v 1.1.1.1 2004/04/26 00:39:49 pa33 Exp $
+.TH ald 8 "17 February 2004" ""
+
+.SH NAME
+
+ald \- Assembly Language Debugger
+
+.SH SYNOPSIS
+
+.B ald
+.RB "[\|" \-v "\|]"
+.RB "[\|" \-h "\|]"
+.RB "[\|" filename "\|]"
+
+.SH DESCRIPTION
+
+  The Assembly Language Debugger allows breakpoint debugging at the
+assembly level. It provides a means to examine and/or change a
+program's memory during execution and stop the execution of a
+program for specified conditions.  There is also a built in
+disassembler which allows you to view the program's executable
+code in human-readable form.
+
+  ALD reads commands interactively after it has been invoked.
+Every command is documented completely in the help system, which
+can be accessed via the
+.B help
+command. The most common commands used during the process of debugging
+are as follows:
+
+.B break \fIaddress
+.RS
+Sets a breakpoint at \fIaddress
+.RE
+
+.B r \fR[\fIarguments\fR]
+.RS
+Begin execution of program using [\fIarguments\fR]
+.RE
+
+.B c
+.RS
+Continue execution of program (after it stopped due to a signal, breakpoint, etc)
+.RE
+
+.B n \fR[\fInum\fR]
+.RS
+Step [\fInum\fR] instructions, stepping over any subroutines
+.RE
+
+.B s \fR[\fInum\fR]
+.RS
+Step [\fInum\fR] instructions, stepping into any subroutines
+.RE
+
+.B d \fR[\fIoptions\fR]
+.RS
+Disassemble machine opcodes (see \fBhelp dissassemble \fR for more information)
+.RE
+
+.B help \fR[\fIcommands\fR]
+.RS
+Give detailed help, in general or for specified commands
+.RE
+
+.B quit
+.RS
+Exit ALD
+.RE
+
+.SH OPTIONS
+
+  The following are command line options which may be passed to ald when it is
+invoked.
+
+.RS
+[\fB\-v\fR] - Output version information.
+
+[\fB\-h\fR] - Output help information.
+
+[\fBfilename\fR] - Name of file to be loaded for debugging.
+.RE
+
+.SH AUTHOR
+Patrick Alken <pa59@cornell.edu>

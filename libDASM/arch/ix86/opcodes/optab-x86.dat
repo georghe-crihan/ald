@@ -1,0 +1,1145 @@
+# $Id: optab-x86.dat,v 1.1.1.1 2004/04/26 00:40:21 pa33 Exp $
+#
+# File format:
+# <Instruction> <Operands> <Opcodes> [flag]
+#
+# NOTE: The accompanying script "optab.pl" requires the instruction
+#       names to be in alphabetical order.
+#
+# Possible values of the [flag] are as follows:
+#
+#  0 - 7   : column of modR/M table to use
+#  r       : can use any column
+#  c       : register code (Table 3.1 in Instruction Set Reference)
+#  f       : FPU stack register code
+#
+# The nomenclature of this file deviates from Intel's Instruction
+# Set Reference in the following ways:
+#
+# Intel                                 Me
+# /r                                    "r" in [flag] column
+# /digit                                "digit" in [flag] column
+# +rb/+rw/+rd                           "c" in [flag] column
+# +i                                    "f" in [flag] column
+# cr0                                   r(cr0)
+# cr2                                   r(cr2)
+# cr3                                   r(cr3)
+# cr4                                   r(cr4)
+# ib                                    imm8
+# iw                                    imm16
+# id                                    imm32
+# m16&16                                mem16
+# m16&32                                mem32
+# m32&32                                mem32
+# m8                                    mem8
+# m16                                   mem16
+# m32                                   mem32
+# m64                                   mem64
+# m80                                   mem80
+# m16:16                                rm16
+# m16:32                                rm32
+# mm                                    mmxreg
+# mm1                                   mmxreg
+# mm/m64                                mem64
+# moffs{8,16,32}                        moffs
+# ptr16:16                              ptr16:16
+# ptr16:32                              ptr16:32
+# Sreg                                  segreg
+# st(0)                                 r(st0)
+# st(i)                                 fpureg
+# xmm                                   xmmreg
+# xmm1                                  xmmreg
+# xmm?/m*                               mem128
+# r32 (using rm field)                  reg32_rm
+#
+# no operands                           void
+# no operands/32 bit addressing         void32
+# numerical constant (ie: 1)            const<number>
+#
+# For opcodes which require specific registers (ie: al,ax etc)
+# I will use the syntax: r##(register). Where ## is an optional
+# size of the register. So, for al, it would be: r8(al)
+#
+# The rest of the nomenclature of this file is mostly identical to
+# that of intel.
+
+AAA       void                37
+
+AAD       void                D5,0A
+AAD       imm8                D5
+
+AAM       void                D4,0A
+AAM       imm8                D4
+
+AAS       void                3F
+
+ADC       r8(al),imm8         14
+ADC       r16(ax),imm16       15
+ADC       r32(eax),imm32      15
+ADC       rm8,imm8            80                 2
+ADC       rm16,imm16          81                 2
+ADC       rm32,imm32          81                 2
+ADC       rm16,imm8           83                 2
+ADC       rm32,imm8           83                 2
+ADC       rm8,reg8            10                 r
+ADC       rm16,reg16          11                 r
+ADC       rm32,reg32          11                 r
+ADC       reg8,rm8            12                 r
+ADC       reg16,rm16          13                 r
+ADC       reg32,rm32          13                 r
+
+ADD       r8(al),imm8         04
+ADD       r16(ax),imm16       05
+ADD       r32(eax),imm32      05
+ADD       rm8,imm8            80                 0
+ADD       rm16,imm16          81                 0
+ADD       rm32,imm32          81                 0
+ADD       rm16,imm8           83                 0
+ADD       rm32,imm8           83                 0
+ADD       rm8,reg8            00                 r
+ADD       rm16,reg16          01                 r
+ADD       rm32,reg32          01                 r
+ADD       reg8,rm8            02                 r
+ADD       reg16,rm16          03                 r
+ADD       reg32,rm32          03                 r
+
+ADDPS     xmmreg,mem128       0F,58              r
+
+AND       r8(al),imm8         24
+AND       r16(ax),imm16       25
+AND       r32(eax),imm32      25
+AND       rm8,imm8            80                 4
+AND       rm16,imm16          81                 4
+AND       rm32,imm32          81                 4
+AND       rm16,imm8           83                 4
+AND       rm32,imm8           83                 4
+AND       rm8,reg8            20                 r
+AND       rm16,reg16          21                 r
+AND       rm32,reg32          21                 r
+AND       reg8,rm8            22                 r
+AND       reg16,rm16          23                 r
+AND       reg32,rm32          23                 r
+
+ARPL      rm16,reg16          63                 r
+
+BOUND     reg16,mem16         62                 r
+BOUND     reg32,mem32         62                 r
+
+BSF       reg16,rm16          0F,BC              r
+BSF       reg32,rm32          0F,BC              r
+
+BSR       reg16,rm16          0F,BD              r
+BSR       reg32,rm32          0F,BD              r
+
+BSWAP     reg32               0F,C8              c
+
+BT        rm16,reg16          0F,A3              r
+BT        rm32,reg32          0F,A3              r
+BT        rm16,imm8           0F,BA              4
+BT        rm32,imm8           0F,BA              4
+
+BTC       rm16,reg16          0F,BB              r
+BTC       rm32,reg32          0F,BB              r
+BTC       rm16,imm8           0F,BA              7
+BTC       rm32,imm8           0F,BA              7
+
+BTR       rm16,reg16          0F,B3              r
+BTR       rm32,reg32          0F,B3              r
+BTR       rm16,imm8           0F,BA              6
+BTR       rm32,imm8           0F,BA              6
+
+BTS       rm16,reg16          0F,AB              r
+BTS       rm32,reg32          0F,AB              r
+BTS       rm16,imm8           0F,BA              5
+BTS       rm32,imm8           0F,BA              5
+
+CALL      rel16|near          E8
+CALL      rel32|near          E8
+CALL      rm16|near           FF                 2
+CALL      rm32|near           FF                 2
+CALL      ptr16:16|far        9A
+CALL      ptr16:32|far        9A
+CALL      rm16|far            FF                 3
+CALL      rm32|far            FF                 3
+
+CBW       void                98
+
+CDQ       void32              99
+
+CLC       void                F8
+CLD       void                FC
+CLI       void                FA
+CLTS      void                0F,06
+
+CMC       void                F5
+
+# CMOVA and CMOVNBE have the exact same opcode - we shall use
+# CMOVA for this opcode.
+CMOVA     reg16,rm16          0F,47              r
+CMOVA     reg32,rm32          0F,47              r
+
+# CMOVB, CMOVC, and CMOVNAE have the exact opcode - we shall use
+# CMOVC for this opcode.
+CMOVC     reg16,rm16          0F,42              r
+CMOVC     reg32,rm32          0F,42              r
+
+CMOVE     reg16,rm16          0F,44              r
+CMOVE     reg32,rm32          0F,44              r
+CMOVG     reg16,rm16          0F,4F              r
+CMOVG     reg32,rm32          0F,4F              r
+
+# CMOVL and CMOVNGE have the exact same opcode - we shall use
+# CMOVL for this opcode.
+CMOVL     reg16,rm16          0F,4C              r
+CMOVL     reg32,rm32          0F,4C              r
+
+# CMOVLE and CMOVNG have the exact same opcode - we shall use
+# CMOVLE for this opcode.
+CMOVLE    reg16,rm16          0F,4E              r
+CMOVLE    reg32,rm32          0F,4E              r
+
+# CMOVBE and CMOVNA have the exact same opcode - we shall use
+# CMOVNA for this opcode.
+CMOVNA    reg16,rm16          0F,46              r
+CMOVNA    reg32,rm32          0F,46              r
+
+# CMOVAE, CMOVNB, and CMOVNC have the exact same opcode - we shall
+# use CMOVNC for this opcode.
+CMOVNC    reg16,rm16          0F,43              r
+CMOVNC    reg32,rm32          0F,43              r
+
+CMOVNE    reg16,rm16          0F,45              r
+CMOVNE    reg32,rm32          0F,45              r
+
+# CMOVGE and CMOVNL have the exact same opcode - we shall use
+# CMOVNL for this opcode.
+CMOVNL    reg16,rm16          0F,4D              r
+CMOVNL    reg32,rm32          0F,4D              r
+
+CMOVNO    reg16,rm32          0F,41              r
+CMOVNO    reg32,rm32          0F,41              r
+CMOVNP    reg16,rm16          0F,4B              r
+CMOVNP    reg32,rm32          0F,4B              r
+CMOVNS    reg16,rm16          0F,49              r
+CMOVNS    reg32,rm32          0F,49              r
+CMOVO     reg16,rm16          0F,40              r
+CMOVO     reg32,rm32          0F,40              r
+CMOVP     reg16,rm32          0F,4A              r
+CMOVP     reg32,rm32          0F,4A              r
+CMOVS     reg16,rm16          0F,48              r
+CMOVS     reg32,rm32          0F,48              r
+
+CMP       r8(al),imm8         3C
+CMP       r16(ax),imm16       3D
+CMP       r32(eax),imm32      3D
+CMP       rm8,imm8            80                 7
+CMP       rm16,imm16          81                 7
+CMP       rm32,imm32          81                 7
+CMP       rm16,imm8           83                 7
+CMP       rm32,imm8           83                 7
+CMP       rm8,reg8            38                 r
+CMP       rm16,reg16          39                 r
+CMP       rm32,reg32          39                 r
+CMP       reg8,rm8            3A                 r
+CMP       reg16,rm16          3B                 r
+CMP       reg32,rm32          3B                 r
+
+CMPSB     void                A6
+CMPSD     void32              A7
+CMPSW     void                A7
+
+CMPXCHG   rm8,reg8            0F,B0              r
+CMPXCHG   rm16,reg16          0F,B1              r
+CMPXCHG   rm32,reg32          0F,B1              r
+CMPXCHG8B mem64               0F,C7              1
+
+CPUID     void                0F,A2
+
+CWD       void                99
+
+CWDE      void32              98
+
+DAA       void                27
+
+DAS       void                2F
+
+DEC       rm8                 FE                 1
+DEC       rm16                FF                 1
+DEC       rm32                FF                 1
+DEC       reg16               48                 c
+DEC       reg32               48                 c
+
+DIV       rm8                 F6                 6
+DIV       rm16                F7                 6
+DIV       rm32                F7                 6
+
+EMMS      void                0F,77
+
+ENTER     imm16,imm8          C8
+
+F2XM1     void                D9,F0
+
+FABS      void                D9,E1
+
+FADD      r(st0),mem32        D8                 0
+FADD      r(st0),mem64        DC                 0
+FADD      r(st0),fpureg       D8,C0              f
+FADD      fpureg,r(st0)       DC,C0              f
+FADDP     fpureg,r(st0)       DE,C0              f
+
+FBLD      r(st0),mem80        DF                 4
+
+FBSTP     mem80,r(st0)        DF                 6
+
+FCHS      r(st0)              D9,E0
+
+FCLEX     void                9B,DB,E2
+
+FCMOVB    r(st0),fpureg       DA,C0              f
+FCMOVBE   r(st0),fpureg       DA,D0              f
+FCMOVE    r(st0),fpureg       DA,C8              f
+FCMOVNB   r(st0),fpureg       DB,C0              f
+FCMOVNBE  r(st0),fpureg       DB,D0              f
+FCMOVNE   r(st0),fpureg       DB,C8              f
+FCMOVNU   r(st0),fpureg       DB,D8              f
+FCMOVU    r(st0),fpureg       DA,D8              f
+
+FCOM      r(st0),mem32        D8                 2
+FCOM      r(st0),mem64        DC                 2
+FCOM      r(st0),fpureg       D8,D0              f
+
+FCOMI     r(st0),fpureg       DB,F0              f
+FCOMIP    r(st0),fpureg       DF,F0              f
+
+FCOMP     r(st0),mem32        D8                 3
+FCOMP     r(st0),mem64        DC                 3
+FCOMP     r(st0),fpureg       D8,D8              f
+FCOMPP    r(st1),r(st0)       DE,D9
+
+FCOS      r(st0)              D9,FF
+
+FDECSTP   void                D9,F6
+
+FDIV      r(st0),mem32        D8                 6
+FDIV      r(st0),mem64        DC                 6
+FDIV      r(st0),fpureg       D8,F0              f
+FDIV      fpureg,r(st0)       DC,F8              f
+FDIVP     fpureg,r(st0)       DE,F8              f
+
+FDIVR     r(st0),mem32        D8                 7
+FDIVR     r(st0),mem64        DC                 7
+FDIVR     r(st0),fpureg       D8,F8              f
+FDIVR     fpureg,r(st0)       DC,F0              f
+FDIVRP    fpureg,r(st0)       DE,F0              f
+
+FFREE     fpureg              DD,C0              f
+
+FIADD     r(st0),mem32        DA                 0
+FIADD     r(st0),mem16        DE                 0
+
+FICOM     r(st0),mem16        DE                 2
+FICOM     r(st0),mem32        DA                 2
+FICOMP    r(st0),mem16        DE                 3
+FICOMP    r(st0),mem32        DA                 3
+
+FIDIV     r(st0),mem32        DA                 6
+FIDIV     r(st0),mem16        DE                 6
+
+FIDIVR    r(st0),mem32        DA                 7
+FIDIVR    r(st0),mem16        DE                 7
+
+FILD      r(st0),mem16        DF                 0
+FILD      r(st0),mem32        DB                 0
+FILD      r(st0),mem64        DF                 5
+
+FIMUL     r(st0),mem32        DA                 1
+FIMUL     r(st0),mem16        DE                 1
+
+FINCSTP   void                D9,F7
+
+FINIT     void                9B,DB,E3
+
+FIST      mem16,r(st0)        DF                 2
+FIST      mem32,r(st0)        DB                 2
+FISTP     mem16,r(st0)        DF                 3
+FISTP     mem32,r(st0)        DB                 3
+FISTP     mem64,r(st0)        DF                 7
+
+FISUB     r(st0),mem32        DA                 4
+FISUB     r(st0),mem16        DE                 4
+
+FISUBR    r(st0),mem32        DA                 5
+FISUBR    r(st0),mem16        DE                 5
+
+FLD       r(st0),mem32        D9                 0
+FLD       r(st0),mem64        DD                 0
+FLD       r(st0),mem80        DB                 5
+FLD       fpureg              D9,C0              f
+
+FLD1      r(st0)              D9,E8
+
+FLDCW     rm                  D9                 5
+
+FLDENV    rm                  D9                 4
+
+FLDL2E    r(st0)              D9,EA
+FLDL2T    r(st0)              D9,E9
+FLDLG2    r(st0)              D9,EC
+FLDLN2    r(st0)              D9,ED
+FLDPI     r(st0)              D9,EB
+FLDZ      r(st0)              D9,EE
+
+FMUL      r(st0),mem32        D8                 1
+FMUL      r(st0),mem64        DC                 1
+FMUL      r(st0),fpureg       D8,C8              f
+FMUL      fpureg,r(st0)       DC,C8              f
+FMULP     fpureg,r(st0)       DE,C8              f
+
+FNCLEX    void                DB,E2
+
+FNINIT    void                DB,E3
+
+FNOP      void                D9,D0
+
+FNSAVE    r(st0),mem          DD                 6
+
+FNSTCW    mem                 D9                 7
+
+FNSTENV   mem                 D9                 6
+
+FNSTSW    mem16               DD                 7
+FNSTSW    r16(ax)             DF,E0
+
+FPATAN    r(st0)              D9,F3
+
+FPREM     r(st0)              D9,F8
+
+FPREM1    r(st0)              D9,F5
+
+FPTAN     r(st0)              D9,F2
+
+FRNDINT   r(st0)              D9,FC
+
+FRSTOR    r(st0),mem          DD                 4
+
+FSAVE     r(st0),mem          9B,DD              6
+
+FSCALE    r(st0)              D9,FD
+
+FSIN      r(st0)              D9,FE
+
+FSINCOS   r(st0)              D9,FB
+
+FSQRT     r(st0)              D9,FA
+
+FST       mem32,r(st0)        D9                 2
+FST       mem64,r(st0)        DD                 2
+FST       fpureg,r(st0)       DD,D0              f
+
+FSTCW     mem                 9B,D9              7
+
+FSTENV    mem                 9B,D9              6
+
+FSTP      mem32,r(st0)        D9                 3
+FSTP      mem64,r(st0)        DD                 3
+FSTP      mem80,r(st0)        DB                 7
+FSTP      fpureg,r(st0)       DD,D8              f
+
+FSTSW     mem                 9B,DD              7
+FSTSW     r16(ax)             9B,DF,E0
+
+FSUB      r(st0),mem32        D8                 4
+FSUB      r(st0),mem64        DC                 4
+FSUB      r(st0),fpureg       D8,E0              f
+FSUB      fpureg,r(st0)       DC,E8              f
+FSUBP     fpureg,r(st0)       DE,E8              f
+
+FSUBR     r(st0),mem32        D8                 5
+FSUBR     r(st0),mem64        DC                 5
+FSUBR     r(st0),fpureg       D8,E8              f
+FSUBR     fpureg,r(st0)       DC,E0              f
+FSUBRP    fpureg,r(st0)       DE,E0              f
+
+FTST      r(st0)              D9,E4
+
+FUCOM     fpureg              DD,E0              f
+
+FUCOMI    r(st0),fpureg       DB,E8              f
+FUCOMIP   r(st0),fpureg       DF,E8              f
+
+FUCOMP    fpureg              DD,E8              f
+FUCOMPP   r(st1)              DA,E9
+
+FXAM      r(st0)              D9,E5
+
+FXCH      fpureg              D9,C8              f
+
+FXTRACT   r(st0)              D9,F4
+
+FYL2X     r(st0)              D9,F1
+
+FYL2XP1   r(st0)              D9,F9
+
+HLT       void                F4
+
+IDIV      rm8                 F6                 7
+IDIV      rm16                F7                 7
+IDIV      rm32                F7                 7
+
+IMUL      rm8                 F6                 5
+IMUL      rm16                F7                 5
+IMUL      rm32                F7                 5
+IMUL      reg16,rm16          0F,AF              r
+IMUL      reg32,rm32          0F,AF              r
+IMUL      reg16,rm16,imm8     6B                 r
+IMUL      reg32,rm32,imm8     6B                 r
+IMUL      reg16,rm16,imm16    69                 r
+IMUL      reg32,rm32,imm32    69                 r
+
+IN        r8(al),imm8         E4
+IN        r16(ax),imm8        E5
+IN        r32(eax),imm8       E5
+IN        r8(al),r16(dx)      EC
+IN        r16(ax),r16(dx)     ED
+IN        r32(eax),r16(dx)    ED
+
+INC       rm8                 FE                 0
+INC       rm16                FF                 0
+INC       rm32                FF                 0
+INC       reg16               40                 c
+INC       reg32               40                 c
+
+INSB      void                6C
+INSD      void32              6D
+INSW      void                6D
+
+INT       imm8                CD
+INT3      void                CC
+INTO      void                CE
+
+INVD      void                0F,08
+
+INVLPG    mem                 0F,01              7
+
+IRET      void                CF
+IRETD     void32              CF
+
+JA        rel8                77
+JA        rel16|near          0F,87
+JA        rel32|near          0F,87
+JC        rel8                72
+JC        rel16|near          0F,82
+JC        rel32|near          0F,82
+JCXZ      rel8                E3
+JE        rel8                74
+JE        rel16|near          0F,84
+JE        rel32|near          0F,84
+JG        rel8                7F
+JG        rel16|near          0F,8F
+JG        rel32|near          0F,8F
+JL        rel8                7C
+JL        rel16|near          0F,8C
+JL        rel32|near          0F,8C
+JLE       rel8                7E
+JLE       rel16|near          0F,8E
+JLE       rel32|near          0F,8E
+
+JMP       rel8|short          EB
+JMP       rel16|near          E9
+JMP       rel32|near          E9
+JMP       rm16|near           FF                 4
+JMP       rm32|near           FF                 4
+JMP       ptr16:16|far        EA
+JMP       ptr16:32|far        EA
+JMP       rm16|far            FF                 5
+JMP       rm32|far            FF                 5
+
+JNA       rel8                76
+JNA       rel16|near          0F,86
+JNA       rel32|near          0F,86
+JNC       rel8                73
+JNC       rel16|near          0F,83
+JNC       rel32|near          0F,83
+JNE       rel8                75
+JNE       rel16|near          0F,85
+JNE       rel32|near          0F,85
+JNL       rel8                7D
+JNL       rel16|near          0F,8D
+JNL       rel32|near          0F,8D
+JNO       rel8                71
+JNO       rel16|near          0F,81
+JNO       rel32|near          0F,81
+JNP       rel8                7B
+JNP       rel16|near          0F,8B
+JNP       rel32|near          0F,8B
+JNS       rel8                79
+JNS       rel16|near          0F,89
+JNS       rel32|near          0F,89
+JO        rel8                70
+JO        rel16|near          0F,80
+JO        rel32|near          0F,80
+JP        rel8                7A
+JP        rel16|near          0F,8A
+JP        rel32|near          0F,8A
+JS        rel8                78
+JS        rel16|near          0F,88
+JS        rel32|near          0F,88
+
+LAHF      void                9F
+
+LAR       reg16,rm16          0F,02              r
+LAR       reg32,rm32          0F,02              r
+
+LDS       reg16,rm16          C5                 r
+LDS       reg32,rm32          C5                 r
+
+LEA       reg16,mem           8D                 r
+LEA       reg32,mem           8D                 r
+
+LEAVE     void                C9
+LEAVE     void32              C9
+
+LES       reg16,rm16          C4                 r
+LES       reg32,rm32          C4                 r
+
+LFS       reg16,rm16          0F,B4              r
+LFS       reg32,rm32          0F,B4              r
+
+LGDT      mem16               0F,01              2
+
+LGS       reg16,rm16          0F,B5              r
+LGS       reg32,rm32          0F,B5              r
+
+LIDT      mem32               0F,01              3
+
+LLDT      rm16                0F,00              2
+
+LMSW      rm16                0F,01              6
+
+LOCK      void                F0
+
+LODSB     void                AC
+LODSD     void32              AD
+LODSW     void                AD
+
+LOOP      rel8                E2
+LOOPE     rel8                E1
+LOOPNE    rel8                E0
+
+LSL       reg16,rm16          0F,03              r
+LSL       reg32,rm32          0F,03              r
+
+LSS       reg16,rm16          0F,B2              r
+LSS       reg32,rm32          0F,B2              r
+
+LTR       rm16                0F,00              3
+
+MOV       rm8,reg8            88                 r
+MOV       rm16,reg16          89                 r
+MOV       rm32,reg32          89                 r
+MOV       reg8,rm8            8A                 r
+MOV       reg16,rm16          8B                 r
+MOV       reg32,rm32          8B                 r
+MOV       rm16,segreg         8C                 r
+MOV       segreg,rm16         8E                 r
+MOV       r8(al),moffs        A0
+MOV       r16(ax),moffs       A1
+MOV       r32(eax),moffs      A1
+MOV       moffs,r8(al)        A2
+MOV       moffs,r16(ax)       A3
+MOV       moffs,r32(eax)      A3
+MOV       reg8,imm8           B0                 c
+MOV       reg16,imm16         B8                 c
+MOV       reg32,imm32         B8                 c
+MOV       rm8,imm8            C6                 0
+MOV       rm16,imm16          C7                 0
+MOV       rm32,imm32          C7                 0
+
+MOV       conreg,reg32_rm     0F,22              r
+MOV       reg32_rm,conreg     0F,20              r
+
+MOV       reg32_rm,debreg     0F,21              r
+MOV       debreg,reg32_rm     0F,23              r
+
+MOVAPS    xmmreg,mem128       0F,28              r
+MOVAPS    mem128,xmmreg       0F,29              r
+
+MOVD      mmxreg,rm32         0F,6E              r
+MOVD      rm32,mmxreg         0F,7E              r
+
+MOVHPS    xmmreg,mem64        0F,16              r
+MOVHPS    mem64,xmmreg        0F,17              r
+
+MOVLPS    xmmreg,mem64        0F,12              r
+MOVLPS    mem64,xmmreg        0F,13              r
+
+MOVMSKPS  reg32,xmmreg        0F,50              r
+
+MOVNTPS   mem,xmmreg          0F,2B              r
+
+MOVNTQ    mem,mmxreg          0F,E7              r
+
+MOVQ      mmxreg,mem64        0F,6F              r
+MOVQ      mem64,mmxreg        0F,7F              r
+
+MOVSB     void                A4
+MOVSD     void32              A5
+
+MOVSS     xmmreg,mem128       F3,0F,10           r
+MOVSS     mem128,xmmreg       F3,0F,11           r
+
+MOVSW     void                A5
+
+MOVSX     reg16,rm8           0F,BE              r
+MOVSX     reg32,rm8           0F,BE              r
+MOVSX     reg32,rm16          0F,BF              r
+
+MOVUPS    xmmreg,mem128       0F,10              r
+MOVUPS    mem128,xmmreg       0F,11              r
+
+MOVZX     reg16,rm8           0F,B6              r
+MOVZX     reg32,rm8           0F,B6              r
+MOVZX     reg32,rm16          0F,B7              r
+
+MUL       rm8                 F6                 4
+MUL       rm16                F7                 4
+MUL       rm32                F7                 4
+
+MULPS     xmmreg,mem128       0F,59              r
+
+MULSS     xmmreg,mem128       F3,0F,59           r
+
+NEG       rm8                 F6                 3
+NEG       rm16                F7                 3
+NEG       rm32                F7                 3
+
+NOP       void                90
+
+NOT       rm8                 F6                 2
+NOT       rm16                F7                 2
+NOT       rm32                F7                 2
+
+OR        r8(al),imm8         0C
+OR        r16(ax),imm16       0D
+OR        r32(eax),imm32      0D
+OR        rm8,imm8            80                 1
+OR        rm16,imm16          81                 1
+OR        rm32,imm32          81                 1
+OR        rm16,imm8           83                 1
+OR        rm32,imm8           83                 1
+OR        rm8,reg8            08                 r
+OR        rm16,reg16          09                 r
+OR        rm32,reg32          09                 r
+OR        reg8,rm8            0A                 r
+OR        reg16,rm16          0B                 r
+OR        reg32,rm32          0B                 r
+
+ORPS      xmmreg,mem128       0F,56              r
+
+OUT       imm8,r8(al)         E6
+OUT       imm8,r16(ax)        E7
+OUT       imm8,r32(eax)       E7
+OUT       r16(dx),r8(al)      EE
+OUT       r16(dx),r16(ax)     EF
+OUT       r16(dx),r32(eax)    EF
+
+OUTSB     void                6E
+OUTSD     void32              6F
+OUTSW     void                6F
+
+PACKSSDW  mmxreg,mem64        0F,6B              r
+PACKSSWB  mmxreg,mem64        0F,63              r
+
+PACKUSWB  mmxreg,mem64        0F,67              r
+
+PADDB     mmxreg,mem64        0F,FC              r
+PADDD     mmxreg,mem64        0F,FE              r
+
+PADDSB    mmxreg,mem64        0F,EC              r
+PADDSW    mmxreg,mem64        0F,ED              r
+
+PADDUSB   mmxreg,mem64        0F,DC              r
+PADDUSW   mmxreg,mem64        0F,DD              r
+
+PADDW     mmxreg,mem64        0F,FD              r
+
+PAND      mmxreg,mem64        0F,DB              r
+
+PANDN     mmxreg,mem64        0F,DF              r
+
+PAVGB     mmxreg,mem64        0F,E0              r
+PAVGW     mmxreg,mem64        0F,E3              r
+
+PCMPEQB   mmxreg,mem64        0F,74              r
+PCMPEQD   mmxreg,mem64        0F,76              r
+PCMPEQW   mmxreg,mem64        0F,75              r
+
+PCMPGTB   mmxreg,mem64        0F,64              r
+PCMPGTD   mmxreg,mem64        0F,66              r
+PCMPGTW   mmxreg,mem64        0F,65              r
+
+PEXTRW    reg32,mmxreg,imm8   0F,C5              r
+
+PINSRW    mmxreg,mem16,imm8   0F,C4              r
+
+PMADDWD   mmxreg,mem64        0F,F5              r
+
+PMAXSW    mmxreg,mem64        0F,EE              r
+
+PMAXUB    mmxreg,mem64        0F,DE              r
+
+PMINSW    mmxreg,mem64        0F,EA              r
+
+PMINUB    mmxreg,mem64        0F,DA              r
+
+PMOVMSKB  reg32,mmxreg        0F,D7              r
+
+PMULHUW   mmxreg,mem64        0F,E4              r
+
+PMULHW    mmxreg,mem64        0F,E5              r
+
+PMULLW    mmxreg,mem64        0F,D5              r
+
+POP       mem16               8F                 0
+POP       mem32               8F                 0
+POP       reg16               58                 c
+POP       reg32               58                 c
+POP       r(ds)               1F
+POP       r(es)               07
+POP       r(ss)               17
+POP       r(fs)               0F,A1
+POP       r(gs)               0F,A9
+
+POPA      void                61
+POPAD     void32              61
+
+POPF      void                9D
+POPFD     void32              9D
+
+POR       mmxreg,mem64        0F,EB              r
+
+PREFETCHNTA mem8              0F,18              0
+PREFETCHT0 mem8               0F,18              1
+PREFETCHT1 mem8               0F,18              2
+PREFETCHT2 mem8               0F,18              3
+
+PSADBW     mmxreg,mem64       0F,F6              r
+
+PSHUFW     mmxreg,mem64,imm8  0F,70              r
+
+PSLLD      mmxreg,mem64       0F,F2              r
+PSLLD      mmxreg,imm8        0F,72              6
+PSLLQ      mmxreg,mem64       0F,F3              r
+PSLLQ      mmxreg,imm8        0F,73              6
+PSLLW      mmxreg,mem64       0F,F1              r
+PSLLW      mmxreg,imm8        0F,71              6
+
+PSRAD      mmxreg,mem64       0F,E2              r
+PSRAD      mmxreg,imm8        0F,72              4
+PSRAW      mmxreg,mem64       0F,E1              r
+PSRAW      mmxreg,imm8        0F,71              4
+
+PSRLD      mmxreg,mem64       0F,D2              r
+PSRLD      mmxreg,imm8        0F,72              2
+PSRLQ      mmxreg,mem64       0F,D3              r
+PSRLQ      mmxreg,imm8        0F,73              2
+PSRLW      mmxreg,mem64       0F,D1              r
+PSRLW      mmxreg,imm8        0F,71              2
+
+PSUBB      mmxreg,mem64       0F,F8              r
+PSUBD      mmxreg,mem64       0F,FA              r
+PSUBSB     mmxreg,mem64       0F,E8              r
+PSUBSW     mmxreg,mem64       0F,E9              r
+PSUBUSB    mmxreg,mem64       0F,D8              r
+PSUBUSW    mmxreg,mem64       0F,D9              r
+PSUBW      mmxreg,mem64       0F,F9              r
+
+PUNPCKHBW  mmxreg,mem64       0F,68              r
+PUNPCKHDQ  mmxreg,mem64       0F,6A              r
+PUNPCKHWD  mmxreg,mem64       0F,69              r
+
+PUNPCKLBW  mmxreg,mem64       0F,60              r
+PUNPCKLDQ  mmxreg,mem64       0F,62              r
+PUNPCKLWD  mmxreg,mem64       0F,61              r
+
+PUSH       rm16               FF                 6
+PUSH       rm32               FF                 6
+PUSH       reg16              50                 c
+PUSH       reg32              50                 c
+PUSH       imm8               6A
+PUSH       imm16              68
+PUSH       imm32              68
+PUSH       r(cs)              0E
+PUSH       r(ss)              16
+PUSH       r(ds)              1E
+PUSH       r(es)              06
+PUSH       r(fs)              0F,A0
+PUSH       r(gs)              0F,A8
+
+PUSHA      void               60
+PUSHAD     void32             60
+
+PUSHF      void               9C
+PUSHFD     void32             9C
+
+PXOR       mmxreg,mem64       0F,EF              r
+
+RCL        rm8,const1         D0                 2
+RCL        rm8,r(cl)          D2                 2
+RCL        rm8,imm8           C0                 2
+RCL        rm16,const1        D1                 2
+RCL        rm16,r(cl)         D3                 2
+RCL        rm16,imm8          C1                 2
+RCL        rm32,const1        D1                 2
+RCL        rm32,r(cl)         D3                 2
+RCL        rm32,imm8          C1                 2
+
+RCPPS      xmmreg,mem128      0F,53              r
+
+RCPSS      xmmreg,mem128      F3,0F,53           r
+
+RCR        rm8,const1         D0                 3
+RCR        rm8,r(cl)          D2                 3
+RCR        rm8,imm8           C0                 3
+RCR        rm16,const1        D1                 3
+RCR        rm16,r(cl)         D3                 3
+RCR        rm16,imm8          C1                 3
+RCR        rm32,const1        D1                 3
+RCR        rm32,r(cl)         D3                 3
+RCR        rm32,imm8          C1                 3
+
+RDMSR      void               0F,32
+
+RDPMC      void               0F,33
+
+RDTSC      void               0F,31
+
+RETF       void               CB
+RETF       imm16              CA
+RETN       void               C3
+RETN       imm16              C2
+
+ROL        rm8,const1         D0                 0
+ROL        rm8,r(cl)          D2                 0
+ROL        rm8,imm8           C0                 0
+ROL        rm16,const1        D1                 0
+ROL        rm16,r(cl)         D3                 0
+ROL        rm16,imm8          C1                 0
+ROL        rm32,const1        D1                 0
+ROL        rm32,r(cl)         D3                 0
+ROL        rm32,imm8          C1                 0
+
+ROR        rm8,const1         D0                 1
+ROR        rm8,r(cl)          D2                 1
+ROR        rm8,imm8           C0                 1
+ROR        rm16,const1        D1                 1
+ROR        rm16,r(cl)         D3                 1
+ROR        rm16,imm8          C1                 1
+ROR        rm32,const1        D1                 1
+ROR        rm32,r(cl)         D3                 1
+ROR        rm32,imm8          C1                 1
+
+RSM        void               0F,AA
+
+RSQRTPS    xmmreg,mem128      0F,52              r
+
+RSQRTSS    xmmreg,mem128      F3,0F,52           r
+
+SAHF       void               9E
+
+#SAL        rm8,const1         D0                 4
+#SAL        rm8,r(cl)          D2                 4
+#SAL        rm8,imm8           C0                 4
+#SAL        rm16,const1        D1                 4
+#SAL        rm16,r(cl)         D3                 4
+#SAL        rm16,imm8          C1                 4
+#SAL        rm32,const1        D1                 4
+#SAL        rm32,r(cl)         D3                 4
+#SAL        rm32,imm8          C1                 4
+
+SAR        rm8,const1         D0                 7
+SAR        rm8,r(cl)          D2                 7
+SAR        rm8,imm8           C0                 7
+SAR        rm16,const1        D1                 7
+SAR        rm16,r(cl)         D3                 7
+SAR        rm16,imm8          C1                 7
+SAR        rm32,const1        D1                 7
+SAR        rm32,r(cl)         D3                 7
+SAR        rm32,imm8          C1                 7
+
+SBB        r(al),imm8         1C
+SBB        r(ax),imm16        1D
+SBB        r(eax),imm32       1D
+SBB        rm8,imm8           80                 3
+SBB        rm16,imm16         81                 3
+SBB        rm32,imm32         81                 3
+SBB        rm16,imm8          83                 3
+SBB        rm32,imm8          83                 3
+SBB        rm8,reg8           18                 r
+SBB        rm16,reg16         19                 r
+SBB        rm32,reg32         19                 r
+SBB        reg8,rm8           1A                 r
+SBB        reg16,rm16         1B                 r
+SBB        reg32,rm32         1B                 r
+
+SCASB      void               AE
+SCASD      void32             AF
+SCASW      void               AF
+
+SETA       rm8                0F,97              r
+SETC       rm8                0F,92              r
+SETE       rm8                0F,94              r
+SETG       rm8                0F,9F              r
+SETL       rm8                0F,9C              r
+SETNA      rm8                0F,96              r
+SETNC      rm8                0F,93              r
+SETNE      rm8                0F,95              r
+SETNG      rm8                0F,9E              r
+SETNL      rm8                0F,9D              r
+SETNO      rm8                0F,91              r
+SETNP      rm8                0F,9B              r
+SETNS      rm8                0F,99              r
+SETO       rm8                0F,90              r
+SETP       rm8                0F,9A              r
+SETS       rm8                0F,98              r
+
+SFENCE     rm16               0F,AE              7
+
+SGDT       mem                0F,01              0
+
+SHL        rm8,const1         D0                 4
+SHL        rm8,r(cl)          D2                 4
+SHL        rm8,imm8           C0                 4
+SHL        rm16,const1        D1                 4
+SHL        rm16,r(cl)         D3                 4
+SHL        rm16,imm8          C1                 4
+SHL        rm32,const1        D1                 4
+SHL        rm32,r(cl)         D3                 4
+SHL        rm32,imm8          C1                 4
+
+SHLD       rm16,reg16,imm8    0F,A4              r
+SHLD       rm16,reg16,r(cl)   0F,A5              r
+SHLD       rm32,reg32,imm8    0F,A4              r
+SHLD       rm32,reg32,r(cl)   0F,A5              r
+
+SHR        rm8,const1         D0                 5
+SHR        rm8,r(cl)          D2                 5
+SHR        rm8,imm8           C0                 5
+SHR        rm16,const1        D1                 5
+SHR        rm16,r(cl)         D3                 5
+SHR        rm16,imm8          C1                 5
+SHR        rm32,const1        D1                 5
+SHR        rm32,r(cl)         D3                 5
+SHR        rm32,imm8          C1                 5
+
+SHRD       rm16,reg16,imm8    0F,AC              r
+SHRD       rm16,reg16,r(cl)   0F,AD              r
+SHRD       rm32,reg32,imm8    0F,AC              r
+SHRD       rm32,reg32,r(cl)   0F,AD              r
+
+SHUFPS     xmmreg,mem128,imm8 0F,C6              r
+
+SIDT       mem                0F,01              1
+
+SLDT       rm16               0F,00              0
+SLDT       rm32               0F,00              0
+
+SMSW       rm16               0F,01              4
+SMSW       mem32              0F,01              4
+
+SQRTPS     xmmreg,mem128      0F,51              r
+
+SQRTSS     xmmreg,mem128      F3,0F,51           r
+
+STC        void               F9
+
+STD        void               FD
+
+STI        void               FB
+
+STMXCSR    mem32              0F,AE              3
+
+STOSB      void               AA
+STOSD      void32             AB
+STOSW      void               AB
+
+STR        rm16               0F,00              1
+
+SUB        r(al),imm8         2C
+SUB        r(ax),imm16        2D
+SUB        r(eax),imm32       2D
+SUB        rm8,imm8           80                 5
+SUB        rm16,imm16         81                 5
+SUB        rm32,imm32         81                 5
+SUB        rm16,imm8          83                 5
+SUB        rm32,imm8          83                 5
+SUB        rm8,reg8           28                 r
+SUB        rm16,reg16         29                 r
+SUB        rm32,reg32         29                 r
+SUB        reg8,rm8           2A                 r
+SUB        reg16,rm16         2B                 r
+SUB        reg32,rm32         2B                 r
+
+SUBPS      xmmreg,mem128      0F,5C              r
+
+SUBSS      xmmreg,mem128      F3,0F,5C           r
+
+SYSENTER   void               0F,34
+
+SYSEXIT    void               0F,35
+
+TEST       r(al),imm8         A8
+TEST       r(ax),imm16        A9
+TEST       r(eax),imm32       A9
+TEST       rm8,imm8           F6                 0
+TEST       rm16,imm16         F7                 0
+TEST       rm32,imm32         F7                 0
+TEST       rm8,reg8           84                 r
+TEST       rm16,reg16         85                 r
+TEST       rm32,reg32         85                 r
+
+UCOMISS    xmmreg,mem128      0F,2E              r
+
+UD2        void               0F,0B
+
+UNPCKHPS   xmmreg,mem128      0F,15              r
+
+UNPCKLPS   xmmreg,mem128      0F,14              r
+
+VERR       rm16               0F,00              4
+VERW       rm16               0F,00              5
+
+WAIT       void               9B
+
+WBINVD     void               0F,09
+
+WRMSR      void               0F,30
+
+XADD       rm8,reg8           0F,C0              r
+XADD       rm16,reg16         0F,C1              r
+XADD       rm32,reg32         0F,C1              r
+
+XCHG       r(ax),reg16        90                 c
+XCHG       r(eax),reg32       90                 c
+XCHG       reg8,rm8           86                 r
+XCHG       reg16,rm16         87                 r
+XCHG       reg32,rm32         87                 r
+
+XLATB      void               D7
+
+XOR        r(al),imm8         34
+XOR        r(ax),imm16        35
+XOR        r(eax),imm32       35
+XOR        rm8,imm8           80                 6
+XOR        rm16,imm16         81                 6
+XOR        rm32,imm32         81                 6
+XOR        rm16,imm8          83                 6
+XOR        rm32,imm8          83                 6
+XOR        rm8,reg8           30                 r
+XOR        rm16,reg16         31                 r
+XOR        rm32,reg32         31                 r
+XOR        reg8,rm8           32                 r
+XOR        reg16,rm16         33                 r
+XOR        reg32,rm32         33                 r
+
+XORPS      xmmreg,mem128      0F,57              r

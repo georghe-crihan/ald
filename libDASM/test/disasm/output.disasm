@@ -1,0 +1,174 @@
+00000000 37                   aaa
+00000001 D50A                 aad
+00000003 D555                 aad 0x55
+00000005 D40A                 aam
+00000007 D443                 aam 0x43
+00000009 3F                   aas
+0000000A 1455                 adc al, 0x55
+0000000C 151234               adc ax, 0x3412
+0000000F 661578563412         adc eax, 0x12345678
+00000015 801055               adc byte [bx+si], 0x55
+00000018 81103412             adc word [bx+si], 0x1234
+0000001C 6781103412           adc word [eax], 0x1234
+00000021 66811078563412       adc dword [bx+si], 0x12345678
+00000028 6766811078563412     adc dword [eax], 0x12345678
+00000030 831055               adc word [bx+si], 0x55
+00000033 66831055             adc dword [bx+si], 0x55
+00000037 103D                 adc byte [di], bh
+00000039 67103D78563412       adc byte [+0x12345678], bh
+00000040 11E0                 adc ax, sp
+00000042 6611E0               adc eax, esp
+00000045 676611E0             adc eax, esp
+00000049 127796               adc dh, byte [bx+0x96]
+0000004C 137796               adc si, word [bx+0x96]
+0000004F 66137796             adc esi, dword [bx+0x96]
+00000053 0455                 add al, 0x55
+00000055 055566               add ax, 0x6655
+00000058 660578563412         add eax, 0x12345678
+0000005E 800005               add byte [bx+si], 0x5
+00000061 81013412             add word [bx+di], 0x1234
+00000065 66810178563412       add dword [bx+di], 0x12345678
+0000006C 830015               add word [bx+si], 0x15
+0000006F 66830015             add dword [bx+si], 0x15
+00000073 0033                 add byte [bp+di], dh
+00000075 0133                 add word [bp+di], si
+00000077 660133               add dword [bp+di], esi
+0000007A 0233                 add dh, byte [bp+di]
+0000007C 0333                 add si, word [bp+di]
+0000007E 660333               add esi, dword [bp+di]
+00000081 0F5833               addps xmm6, [bp+di]
+00000084 2445                 and al, 0x45
+00000086 251234               and ax, 0x3412
+00000089 662578563412         and eax, 0x12345678
+0000008F 802755               and byte [bx], 0x55
+00000092 81273412             and word [bx], 0x1234
+00000096 66812778563412       and dword [bx], 0x12345678
+0000009D 83A4544388           and word [si+0x4354], 0x88
+000000A2 6683A4544388         and dword [si+0x4354], 0x88
+000000A8 20CD                 and ch, cl
+000000AA 214677               and word [bp+0x77], ax
+000000AD 662114               and dword [si], edx
+000000B0 22CD                 and cl, ch
+000000B2 234677               and ax, word [bp+0x77]
+000000B5 662314               and edx, dword [si]
+000000B8 6310                 arpl word [bx+si], dx
+000000BA 6210                 bound dx, word [bx+si]
+000000BC 666210               bound edx, dword [bx+si]
+000000BF E85622               call near +0x2256
+000000C2 66E878563412         call near +0x12345678
+000000C8 FF163488             call near word [+0x8834]
+000000CC FF15                 call near word [di]
+000000CE 66FF15               call near dword [di]
+000000D1 9A78563412           call far 0x1234:0x5678
+000000D6 669A785634129087     call far 0x8790:0x12345678
+000000DE FF1A                 call far word [bp+si]
+000000E0 66FF1A               call far dword [bp+si]
+000000E3 D801                 fadd st(0), dword [bx+di]
+000000E5 DC01                 fadd st(0), qword [bx+di]
+000000E7 D8C0                 fadd st(0), st(0)
+000000E9 D8C1                 fadd st(0), st(1)
+000000EB D8C2                 fadd st(0), st(2)
+000000ED D8C3                 fadd st(0), st(3)
+000000EF D8C4                 fadd st(0), st(4)
+000000F1 D8C5                 fadd st(0), st(5)
+000000F3 D8C6                 fadd st(0), st(6)
+000000F5 D8C7                 fadd st(0), st(7)
+000000F7 DCC0                 fadd st(0), st(0)
+000000F9 DCC1                 fadd st(1), st(0)
+000000FB DCC2                 fadd st(2), st(0)
+000000FD DCC3                 fadd st(3), st(0)
+000000FF DCC4                 fadd st(4), st(0)
+00000101 DCC5                 fadd st(5), st(0)
+00000103 DCC6                 fadd st(6), st(0)
+00000105 DCC7                 fadd st(7), st(0)
+00000107 DEC0                 faddp st(0), st(0)
+00000109 DEC1                 faddp st(1), st(0)
+0000010B DEC2                 faddp st(2), st(0)
+0000010D DEC3                 faddp st(3), st(0)
+0000010F DEC4                 faddp st(4), st(0)
+00000111 DEC5                 faddp st(5), st(0)
+00000113 DEC6                 faddp st(6), st(0)
+00000115 DEC7                 faddp st(7), st(0)
+00000117 DA02                 fiadd st(0), dword [bp+si]
+00000119 DE03                 fiadd st(0), word [bp+di]
+0000011B 88892376             mov byte [bx+di+0x7623], cl
+0000011F 89892376             mov word [bx+di+0x7623], cx
+00000123 6689892376           mov dword [bx+di+0x7623], ecx
+00000128 8A892376             mov cl, byte [bx+di+0x7623]
+0000012C 8B892376             mov cx, word [bx+di+0x7623]
+00000130 668B892376           mov ecx, dword [bx+di+0x7623]
+00000135 8C00                 mov word [bx+si], es
+00000137 8C08                 mov word [bx+si], cs
+00000139 8C10                 mov word [bx+si], ss
+0000013B 8C18                 mov word [bx+si], ds
+0000013D 8C20                 mov word [bx+si], fs
+0000013F 8C28                 mov word [bx+si], gs
+00000141 678C00               mov word [eax], es
+00000144 8E01                 mov es, word [bx+di]
+00000146 8E09                 mov cs, word [bx+di]
+00000148 8E11                 mov ss, word [bx+di]
+0000014A 8E19                 mov ds, word [bx+di]
+0000014C 8E21                 mov fs, word [bx+di]
+0000014E 8E29                 mov gs, word [bx+di]
+00000150 A05623               mov al, [+0x2356]
+00000153 67A056234589         mov al, [+0x89452356]
+00000159 A15623               mov ax, [+0x2356]
+0000015C 66A15623             mov eax, [+0x2356]
+00000160 6667A156234589       mov eax, [+0x89452356]
+00000167 A25623               mov [+0x2356], al
+0000016A 67A256234589         mov [+0x89452356], al
+00000170 A35623               mov [+0x2356], ax
+00000173 66A35623             mov [+0x2356], eax
+00000177 6667A356234589       mov [+0x89452356], eax
+0000017E B055                 mov al, 0x55
+00000180 B155                 mov cl, 0x55
+00000182 B255                 mov dl, 0x55
+00000184 B355                 mov bl, 0x55
+00000186 B455                 mov ah, 0x55
+00000188 B555                 mov ch, 0x55
+0000018A B655                 mov dh, 0x55
+0000018C B755                 mov bh, 0x55
+0000018E B82378               mov ax, 0x7823
+00000191 B92378               mov cx, 0x7823
+00000194 BA2378               mov dx, 0x7823
+00000197 BB2378               mov bx, 0x7823
+0000019A BC2378               mov sp, 0x7823
+0000019D BD2378               mov bp, 0x7823
+000001A0 BE2378               mov si, 0x7823
+000001A3 BF2378               mov di, 0x7823
+000001A6 66B823784599         mov eax, 0x99457823
+000001AC 66B923784599         mov ecx, 0x99457823
+000001B2 66BA23784599         mov edx, 0x99457823
+000001B8 66BB23784599         mov ebx, 0x99457823
+000001BE 66BC23784599         mov esp, 0x99457823
+000001C4 66BD23784599         mov ebp, 0x99457823
+000001CA 66BE23784599         mov esi, 0x99457823
+000001D0 66BF23784599         mov edi, 0x99457823
+000001D6 C60055               mov byte [bx+si], 0x55
+000001D9 C7002356             mov word [bx+si], 0x5623
+000001DD 66C70023567899       mov dword [bx+si], 0x99785623
+000001E4 0F22F3               mov cr6, ebx
+000001E7 0F22FC               mov cr7, esp
+000001EA 0F22D3               mov cr2, ebx
+000001ED 0F20F3               mov ebx, cr6
+000001F0 0F20FC               mov esp, cr7
+000001F3 0F20D3               mov ebx, cr2
+000001F6 0F21F3               mov ebx, dr6
+000001F9 0F21FC               mov esp, dr7
+000001FC 0F21D3               mov ebx, dr2
+000001FF 0F23F3               mov dr6, ebx
+00000202 0F23FC               mov dr7, esp
+00000205 0F23D3               mov dr2, ebx
+00000208 0F2833               movaps xmm6, [bp+di]
+0000020B 0F2933               movaps [bp+di], xmm6
+0000020E 670F281540910408     movaps xmm2, [+0x8049140]
+00000216 0F1033               movups xmm6, [bp+di]
+00000219 0F1133               movups [bp+di], xmm6
+0000021C 0FF1363412           psllw mm6, qword [+0x1234]
+00000221 0FF1D0               psllw mm2, mm0
+00000224 0F713601             psllw mm6, 0x1
+00000228 0F71B102             psllw mm1, 0x2
+0000022C 0F71F303             psllw mm3, 0x3
+00000230 0FEFD0               pxor mm2, mm0
+00000233 0FEFEE               pxor mm5, mm6
+00000236 0FEF2C               pxor mm5, qword [si]

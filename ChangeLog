@@ -1,0 +1,244 @@
+$Id: ChangeLog,v 1.10 2004/10/10 16:23:47 pa33 Exp $
+
+Assembly Language Debugger ChangeLog
+======== ======== ======== =========
+
+0.1.7        2004/10/10
+
+  - added commands: display, ldisplay, undisplay to dump
+    specified memory locations after each single step
+    (thanks to ziberpunk <ziberpunk =at= ziberghetto dhis org>
+     for the suggestion and code)
+
+  - all Makefiles are now based on automake in the hopes
+    that this will fix some of the problems integrating
+    ald into the *BSD ports systems
+
+  - bug fix where a pointer wasn't set to NULL after
+    clearing program arguments with the "set args" command
+
+  - this is related to the previous feature: if the effective
+    address lies inside a symbol/function, the corresponding
+    symbol is now displayed
+
+  - for CALL and JMP instructions, exact target/effective
+    addresses are now computed
+    (code for this was contributed by Samuel Falvo II
+     <kc5tja =at= arrl net>)
+
+  - upgraded all configure scripts to autoconf v2.59
+
+0.1.6        2004/07/23
+
+  - 2 bug fixes in "examine" command relating to dumping large
+    numbers of bytes
+    (found by mbe21 <mbe21 =at= o2 pl>)
+
+  - bug fix where ~/.aldrc was not saved on ^D
+
+  - minor memory leak fix which would occur in the loading
+    of ~/.aldrc on startup
+    (found by Alfredo Beaumont <ziberpunk =at= ziberghetto dhis org>)
+
+  - more graceful handling of when the debugged program
+    receives an unknown signal
+
+  - "examine" command can now take section and symbol
+    names in addition to numerical addresses
+
+  - fix for libreadline detection in autoconf
+
+  - ripped out all ncurses related code
+
+  - minor memory leak fix: During print bursts, users may
+    hit 'q' or ^C to stop the burst. This is implemented
+    via a longjmp() call, but if memory was allocated
+    beforehand, it would not have been freed since longjmp()
+    alters the path of execution. A simple list structure
+    was implemented to fix this.
+
+  - fixed some issues related to upgrade to autoconf 2.58
+
+  - bumped LICENSE up to GPL v2
+
+  - "register" command now defaults to compact output format
+
+  - fixed some minor disassembly bugs
+
+  - got ald to compile on NetBSD 1.6.2
+    (many thanks to Brad Spencer for providing me with
+     a NetBSD shell account)
+
+0.1.5p1      2003/10/14
+
+  - bandaid to top level Makefile.in to make ald compile
+    in OpenBSD's ports system
+
+0.1.5        2003/10/11
+
+  - "file secinfo" command can now output information on
+    a.out sections
+
+  - added TODO and BUGS files
+
+  - fixed problems relating to changing values of fpu
+    special purpose registers
+
+  - added some missing SSE instructions to libDASM
+
+  - OpenBSD support is back: fixed compile problems relating to
+    fpu code, tested on 3.3 release
+
+  - bug fixes in disassembling various MMX instructions
+    (thanks to Peter Boettcher for patch)
+
+  - changed library libDisasm to libDASM (Debugger's Assembler
+    Library) in anticipation of its new capability to assemble
+    instructions
+
+  - added OSABI information to elf header parsing in libOFF
+    (someone sent me a patch for this ages ago - sorry for
+    taking so long!)
+
+  - added -DNDEBUG to turn off assert() in out-of-the-box
+    compiles
+
+  - bug fix in a.out parser: now checks for QMAGIC binaries
+
+  - "file symbols" command has changed to "file syminfo" and you
+    can now use "file syminfo [symbol name]" to get information for
+    a specific symbol
+
+  - added libOFF to handle all the object file format stuff
+
+0.1.4        2003/07/09
+
+  - libOp has been replaced with the rewritten library libDisasm
+    which has a better overall design
+
+  - incorporated hp's patch:
+      . "disassemble" command now shows symbol information.
+        Also added "set disasm-show-syms" to toggle this feature on/off.
+
+      . added ascii output for all size memory dumps
+
+      . bug fix in elf header parsing
+
+  - added ~/.aldrc configuration file to save settings
+
+  - fixed MSB problem when setting register values
+
+0.1.3        2002/06/29
+
+  - added "set step-display-mmxregs" option to display mmx registers after single
+    stepping
+
+  - "lbreak" command now shows the name of the symbol containing each breakpoint, if
+    any
+
+0.1.2        2002/06/14
+
+  - added "set step-display-fpregs" option to display fpu registers after single
+    stepping
+
+  - added "-all" flag to "register" command to output fpu registers
+
+  - fix for disassembling fld opcodes
+
+  - fix in elf parser for executables with no section name string table present
+
+0.1.1        2002/04/24
+
+  - bug fix in disassembling opcodes with /digit fields
+
+  - bug fix in setting breakpoints which are close together
+
+  - bug fix in handling of runtime arguments
+
+  - new man page
+
+0.1.0        2002/04/13
+
+  - added attach/detach commands
+
+  - added human readable flags register output
+
+  - minor bugfixes
+
+0.0.19       2002/02/27
+
+  - added "set output" command per request
+
+  - incorporated man page courtesy of h-peter
+
+  - bug fix where opcodes with 0xffffffff as immediate arguments
+    would disassemble incorrectly
+
+  - bug fix where INT3 signals should not be passed to the program
+    being debugged
+
+  - bug fix where opcodes containing 0x00 were disassembled
+    incorrectly
+    (reported by Tse Huong Choo)
+
+  - added some va_arg macro bandaids for newer gcc distributions
+
+  - bug fix in the way breakpoint instructions were set
+
+  - bug fix where "examine" would fail on a memory dump containing
+    0xffffffff
+    (reported by Marek Rudolf)
+
+  - "set pause-print" now works with the "examine" command
+
+  - "examine" command can now take a register name as a starting
+    address
+
+  - fixed "examine" command when given an element size greater than
+    1
+
+  - added "set step-display-regs" to control the displaying of
+    registers after single stepping instructions
+
+  - bug fix in handling of 0x66 and 0x67 prefixes
+
+  - fixed minor bug where instructions with a "moffs" operand
+    were incorrectly identified by the disassembler as having
+    a 16 bit offset instead of a 32 bit offset
+
+  - added libreadline support
+
+  - added page pausing, so commands which burst a lot of info
+    can be paused after each pageful - "set pause-print" controls
+    this feature
+
+  - CTRL-C now halts commands which burst a lot of info at once
+    (ie: disassemble, file symbols, etc)
+
+  - fixed minor addressing calculation issue wrt non-executable
+    files
+
+  - fixed segmentation fault which occurred when disassembling
+    the last few bytes of a non-executable file
+
+  - the "disassemble" command can now disassemble memory locations
+
+  - "examine" command now does better checking when outputting
+    non-printable ascii characters
+
+  - implemented commands:
+      break, clear, continue, disable, disassemble, enable, enter,
+      examine, file, help, ignore, lbreak, load, next, quit, register,
+      run, set, step, tbreak, unload, window, write
+
+  - added version information (-v switch)
+
+  - added ncurses interface (-c switch)
+
+  - added library libDebug for singlestep and breakpoint debugging
+    purposes
+
+  - added library libOp for disassembly purposes
+    (currently supports x86 opcodes)
+
+  - implemented parser for ELF object format

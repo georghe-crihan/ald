@@ -1,0 +1,7 @@
+$Id: README,v 1.1.1.1 2004/04/26 00:40:29 pa33 Exp $
+
+This is the Object File Formats Library. It handles the following object
+file formats:
+
+a.out
+elf

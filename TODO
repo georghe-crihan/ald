@@ -1,0 +1,79 @@
+$Id: TODO,v 1.3 2004/09/02 00:11:57 pa33 Exp $
+
+This file contains a list of todo items.
+
+Format is as follows:
+
+  F: short description of feature
+  V: version to expect feature to be completed
+  D: longer description
+
+---------------
+
+F: see about killing the @@GLIBC_2_0 for stuff like printf
+V: 0.1.7
+D: also when displaying a disasm dump with symbols, space format
+D: the address:symbol+off part so the instructions all start at
+D: the same column on the screen
+
+F: 'display' command
+V: 0.1.7
+D: merge in ziberpunk's diffs
+
+F: set step-display-changed-regs
+V: 0.1.7
+D: after stepping, only print out registers which have changed
+   since the last printout (requested by Joseph Smith,
+   joesmith cyberspace org)
+
+F: check all current instructions
+V: 0.1.7
+D: make sure all SSE instructions included in optab-x86.dat
+
+F: a.out parser: symbol stuff
+V: 0.1.7
+
+F: write MMX registers
+V: 0.1.7
+D: need "register" command to be able to write new values to
+D: mmx regs
+
+F: commandline attach feature
+V: 0.1.8
+D: provide pid on commandline similar to gdb
+
+F: pass rest of commandline args to debugged program
+V: 0.1.8
+
+F: "set environment" command
+V: 0.1.8
+D: similar to gdb - pass environment variables to debugged
+D: program
+
+F: "set step-over-rep" command
+V: 0.1.8
+D: so "next" command steps over the "rep" instruction without
+D: executing it a bunch of times
+
+F: "identaddr <address>" command
+V: 0.1.8
+D: locate which symbol corresponds to <address>
+
+F: backtrace
+V: 0.2.0
+
+F: gtk gui interface
+V: 0.2.0
+
+F: "assemble" command
+V: 0.2.0
+D: ability to assemble instructions into memory on the fly
+
+F: better documentation
+V: 0.2.0
+
+F: watchpoints
+V: ?
+
+F: deadlisting
+V: ?

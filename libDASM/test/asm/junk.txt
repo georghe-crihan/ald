@@ -1,0 +1,8 @@
+aam
+aam 0x55
+add  al,
+add  ,
+add al,0x55
+add  ax, bx, 0x11
+mov eax, 0x12345678
+mov eax, 57.9002

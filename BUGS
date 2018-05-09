@@ -1,0 +1,25 @@
+$Id: BUGS,v 1.9 2004/10/09 17:47:14 pa33 Exp $
+
+This file lists known bugs/issues in the current release.
+
+The format is as follows:
+
+  B: short description of bug
+  V: version I want it fixed by
+  D: longer description
+
+--------------
+
+B: check readline/readline.h and readline/history.h
+V: 0.1.7
+D: ald will still try to compile readln.c if these are missing
+
+B: libDASM fix: pxor xmm0, xmm0 (0x66 in front - part of actual opcode)
+V: 0.1.7
+
+B: fpu registers under OpenBSD
+V: 0.1.7
+D: After looking through the kernel source, it seems to me
+D: that OpenBSD's struct fpreg is identical to FreeBSD's,
+D: however the data registers aren't being printed correctly.
+D: Also, fix the "register <fpureg>" command under obsd.

@@ -1,0 +1,10 @@
+aaa
+aad
+aad 0x44
+aam
+aam 0x55
+aas
+adc al, 0x83
+adc ax, 0x1234
+#adc eax, 0x78005067
+adc byte [bx+si], 0x65

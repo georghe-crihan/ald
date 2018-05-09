@@ -1,0 +1,13 @@
+/* include/cfgDASM.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define to 1 if you have the `strdup' function. */
+#undef HAVE_STRDUP
+
+/* Define to 1 if you have the `strerror' function. */
+#undef HAVE_STRERROR
+
+/* Define to 1 if you have the `vprintf' function. */
+#undef HAVE_VPRINTF
+
+/* Define if you are running an Intel x86 cpu */
+#undef INTEL86

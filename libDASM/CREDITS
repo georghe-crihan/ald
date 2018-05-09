@@ -1,0 +1,6 @@
+The design of the ix86 disassembler in this library was inspired
+from the NASM (Netwide Assembler) package, although all code
+is my original work, due to the license restrictions on the nasm
+package.
+
+-- Patrick Alken

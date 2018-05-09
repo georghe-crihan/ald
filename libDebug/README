@@ -1,0 +1,17 @@
+$Id: README,v 1.1.1.1 2004/04/26 00:40:55 pa33 Exp $
+
+This library contains all of the ptrace related code which
+allows single-stepping, breakpoints, and all other debugging
+stuff. It is designed to be a standalone library, and can
+be easily incorporated into other projects. The main external
+routines are located in source/libDebug.c. The two routines which
+must be called are
+
+initDebug()
+termDebug()
+
+which initialize and terminate a debug workspace. After a
+workspace has been initialized, all of the other *Debug() routines
+can be called to perform debugging on a binary. Each routine
+in libDebug.c is documented so that is the best place to find
+out how to use this library.

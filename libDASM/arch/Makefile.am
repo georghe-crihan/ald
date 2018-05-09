@@ -1,0 +1,1 @@
+SUBDIRS = ${arch_frag}

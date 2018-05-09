@@ -1,0 +1,59 @@
+ "Congress shall make no law ... abridging the right of the
+  people peaceably to assemble."
+
+          -- First Ammendment to the Constitution of the U.S.
+
+ Hopefully the above statement works for disassembly as well :-).
+
+ All code in ald was coded by myself, Patrick Alken, unless
+otherwise mentioned in the code/credits.
+ I am releasing this software under the terms of the GNU General
+Public License (see LICENSE). Should you choose to use and/or
+modify my source code in any way, please do so under the terms
+of this license, published by the Free Software Foundation, and
+please keep my name with the code.
+
+ The Assembly Language Debugger is a tool for debugging programs
+at the instruction level. It was born out of my frustration
+with gdb's ability (or lack thereof) to debug assembly language
+programs. I have tried to include as many useful features as
+I could think of into ald, but I am very open to suggestions for
+improvement. If you have a feature request or suggestion, please
+do not hesitate to email me.
+
+DISTRIBUTION
+
+  There is a webpage for ald at:
+  
+      http://ald.sourceforge.net
+
+You may download the latest ald release there.
+
+INSTALLATION
+
+  Read the INSTALL file.
+
+BUGS
+
+ PLEASE email me any bugs you find. I cannot fix bugs if no one
+reports them!! If you submit a bug, please supply as much
+information as you can - if you can reproduce the bug at will,
+please write down the steps you took.
+
+LEGAL STUFF
+
+ There is absolutely NO WARRANTY for this package. The author
+will accept no responsibility, whatsoever, for any damage caused
+by this program.
+
+CREDITS
+
+  Thanks to metawire.org for providing a free OpenBSD shell account
+for testing purposes.
+
+  Thanks to Brad Spencer for providing a free NetBSD shell account
+for testing purposes.
+
+Enjoy, and happy assembling!
+
+Patrick Alken <pa59 cornell edu>
