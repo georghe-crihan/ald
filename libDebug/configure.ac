@@ -44,6 +44,10 @@ case "${host_os}" in
     os_makefile_frag="linux-${text_frag}"
     AC_DEFINE(OS_LINUX, 1, [Define if you are running Linux])
     ;;
+  darwin*)
+    os_makefile_frag="darwin-${text_frag}"
+    AC_DEFINE(OS_DARWIN, 1, [Define if you are running Darwin])
+    ;;
   *)
     os_makefile_frag=unknown
     ;;

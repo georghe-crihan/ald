@@ -4,11 +4,17 @@
 noinst_LIBRARIES = libOFF.a
 
 libOFF_a_SOURCES = \
-  fmt_aout.c       \
-  fmt_elf.c        \
   libOFF.c         \
   symbols.c        \
   version.c
+
+if HAVE_MACHO 
+# FIXME
+else
+libOFF_a_SOURCES += \
+  fmt_aout.c        \
+  fmt_elf.c
+endif
 
 version.o: version.c
 	$(COMPILE) -DVERSION=\"${PACKAGE_VERSION}\" -c -o version.o version.c
