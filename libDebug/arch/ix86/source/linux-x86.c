@@ -59,7 +59,9 @@ x86initRegistersDebug(struct debugWorkspace *ws)
   /*
    * Set up pointers to general registers
    */
-
+#if (SIZEOF_SIZE_T == 8)
+// FIXME
+#else
   x86Registers[REG_EAX].valptr = (void *) &(ws->regContents.Regs.regs.eax);
   x86Registers[REG_EBX].valptr = (void *) &(ws->regContents.Regs.regs.ebx);
   x86Registers[REG_ECX].valptr = (void *) &(ws->regContents.Regs.regs.ecx);
@@ -100,6 +102,7 @@ x86initRegistersDebug(struct debugWorkspace *ws)
 
   x86Registers[REG_IP].valptr = (void *) &(ws->regContents.Regs.regs.eip);
   x86Registers[REG_FLAGS].valptr = (void *) &(ws->regContents.Regs.regs.eflags);
+#endif
 
   /*
    * Floating point unit data registers
@@ -115,6 +118,9 @@ x86initRegistersDebug(struct debugWorkspace *ws)
   /*
    * Other floating point unit registers
    */
+#if (SIZEOF_SIZE_T == 8)
+// FIXME
+#else
   x86Registers[REG_FCTRL].valptr = (void *) &(ws->regContents.Regs.i387.cwd);
   x86Registers[REG_FSTAT].valptr = (void *) &(ws->regContents.Regs.i387.swd);
   x86Registers[REG_FTAG].valptr = (void *) &(ws->regContents.Regs.i387.twd);
@@ -123,6 +129,7 @@ x86initRegistersDebug(struct debugWorkspace *ws)
   x86Registers[REG_FOPCODE].valptr = (void *) ((char *) x86Registers[REG_FCS].valptr + sizeof(unsigned short));
   x86Registers[REG_FOOFF].valptr = (void *) &(ws->regContents.Regs.i387.foo);
   x86Registers[REG_FOSEG].valptr = (void *) &(ws->regContents.Regs.i387.fos);
+#endif
 
   /*
    * MMX registers
@@ -165,8 +172,12 @@ x86getCurrentInstruction(struct debugWorkspace *ws, int *err)
    */
   if (ptrace(PT_GETREGS, ws->pid, 0, &(ws->regContents.Regs.regs)) != 0)
     *err = 1;
-
+#if (SIZEOF_SIZE_T == 8)
+// FIXME
+  return 0;
+#else
   return ((unsigned long) ws->regContents.Regs.regs.eip);
+#endif
 } /* x86getCurrentInstruction() */
 
 /*
@@ -183,7 +194,11 @@ x86setCurrentInstruction(struct debugWorkspace *ws, unsigned long address)
 {
   assert(ws->pid != NOPID);
 
+#if (SIZEOF_SIZE_T == 8)
+// FIXME
+#else
   ws->regContents.Regs.regs.eip = address;
+#endif
 
   if (ptrace(PT_SETREGS, ws->pid, 0, &(ws->regContents.Regs.regs)) != 0)
     return (0);
@@ -228,7 +243,12 @@ x86getRegistersDebug(struct debugWorkspace *ws)
   /*
    * Save the location of our next instruction
    */
+
+#if (SIZEOF_SIZE_T == 8)
+// FIXME
+#else
   ws->instructionPointer = ws->regContents.Regs.regs.eip;
+#endif
 
   return (1);
 } /* x86getRegistersDebug() */
