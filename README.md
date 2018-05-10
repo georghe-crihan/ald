@@ -7,7 +7,8 @@ The interface loads.
 But MOST of the features do not work yet:
 
 - There's no MACHO support (i.e. no file loading).
-- There's no PTRACE - this has to be fixed.
+- Only partial _ptrace()_ support - read/write/get RIP, maybe attach,
+this has to be fixed.
 - It's 32 bit. It has to be ported to amd64 yet
 (i.e. the debugger and the disassembler).
 - All the FIXMEs have to be fixed.

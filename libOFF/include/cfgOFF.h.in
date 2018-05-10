@@ -72,3 +72,6 @@
 /* Define if Darwin/OS X */
 #undef OS_DARWIN
 
+/* sizeof(size_t): this is used to check if we're on a 64-bit system */
+#undef SIZEOF_SIZE_T
+

@@ -28,6 +28,8 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
 
+AC_CHECK_SIZEOF(size_t)
+
 dnl Check for a suitable install program
 AC_PROG_INSTALL
 

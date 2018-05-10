@@ -40,12 +40,46 @@
 #include "alloc.h"
 #include "Strn.h"
 
-// FIXME: Darwin ptrace() replacements
-int darwin_PtraceRead(pid_t pid, caddr_t addr, int data) {
-  return 0;
+// Darwin ptrace() replacements: Read and Write uint32_t.
+uint32_t darwin_PtraceRead(pid_t pid, caddr_t addr, int data) {
+  kern_return_t err;
+  mach_port_t task;
+  uint32_t val = 0, count = 4;
+
+  err = task_for_pid(mach_task_self(), pid, &task);
+  if (err != KERN_SUCCESS)
+    err = 1;
+
+  err = task_suspend(task);
+  if (err != KERN_SUCCESS) {
+  }
+  err = vm_read(task, (vm_address_t)addr, 4, (vm_offset_t *)&val, &count);
+
+  err = task_resume(task);
+  if (err != KERN_SUCCESS) {
+  }
+
+  return val;
 }
 
 int darwin_PtraceWrite(pid_t pid, caddr_t addr, int data) {
+  kern_return_t err;
+  mach_port_t task;
+  uint32_t val = data, count = 4;
+
+  err = task_for_pid(mach_task_self(), pid, &task);
+  if (err != KERN_SUCCESS)
+    err = 1;
+
+  err = task_suspend(task);
+  if (err != KERN_SUCCESS) {
+  }
+  err = vm_write(task, (vm_address_t)addr, (pointer_t)&val, (mach_msg_type_number_t)count);
+
+  err = task_resume(task);
+  if (err != KERN_SUCCESS) {
+  }
+
   return 0;
 }
 
@@ -72,48 +106,50 @@ x86initRegistersDebug(struct debugWorkspace *ws)
   /*
    * Set up pointers to general registers
    */
+
+  x86Registers[REG_EAX].valptr = (void *) &(ws->regContents.state.uts.ts32.__eax);
+  x86Registers[REG_EBX].valptr = (void *) &(ws->regContents.state.uts.ts32.__ebx);
+  x86Registers[REG_ECX].valptr = (void *) &(ws->regContents.state.uts.ts32.__ecx);
+  x86Registers[REG_EDX].valptr = (void *) &(ws->regContents.state.uts.ts32.__edx);
+  x86Registers[REG_ESP].valptr = (void *) &(ws->regContents.state.uts.ts32.__esp);
+  x86Registers[REG_EBP].valptr = (void *) &(ws->regContents.state.uts.ts32.__ebp);
+  x86Registers[REG_ESI].valptr = (void *) &(ws->regContents.state.uts.ts32.__esi);
+  x86Registers[REG_EDI].valptr = (void *) &(ws->regContents.state.uts.ts32.__edi);
+  x86Registers[REG_DS].valptr = (void *) &(ws->regContents.state.uts.ts32.__ds);
+  x86Registers[REG_ES].valptr = (void *) &(ws->regContents.state.uts.ts32.__es);
+  x86Registers[REG_FS].valptr = (void *) &(ws->regContents.state.uts.ts32.__fs);
+  x86Registers[REG_GS].valptr = (void *) &(ws->regContents.state.uts.ts32.__gs);
+  x86Registers[REG_SS].valptr = (void *) &(ws->regContents.state.uts.ts32.__ss);
+  x86Registers[REG_CS].valptr = (void *) &(ws->regContents.state.uts.ts32.__cs);
+  x86Registers[REG_EIP].valptr = (void *) &(ws->regContents.state.uts.ts32.__eip);
+  x86Registers[REG_EFLAGS].valptr = (void *) &(ws->regContents.state.uts.ts32.__eflags);
+
+  x86Registers[REG_AH].valptr = (void *) &(ws->regContents.state.uts.ts32.__eax);
+  x86Registers[REG_AL].valptr = (void *) &(ws->regContents.state.uts.ts32.__eax);
+  x86Registers[REG_AX].valptr = (void *) &(ws->regContents.state.uts.ts32.__eax);
+
+  x86Registers[REG_BH].valptr = (void *) &(ws->regContents.state.uts.ts32.__ebx);
+  x86Registers[REG_BL].valptr = (void *) &(ws->regContents.state.uts.ts32.__ebx);
+  x86Registers[REG_BX].valptr = (void *) &(ws->regContents.state.uts.ts32.__ebx);
+
+  x86Registers[REG_CH].valptr = (void *) &(ws->regContents.state.uts.ts32.__ecx);
+  x86Registers[REG_CL].valptr = (void *) &(ws->regContents.state.uts.ts32.__ecx);
+  x86Registers[REG_CX].valptr = (void *) &(ws->regContents.state.uts.ts32.__ecx);
+
+  x86Registers[REG_DH].valptr = (void *) &(ws->regContents.state.uts.ts32.__edx);
+  x86Registers[REG_DL].valptr = (void *) &(ws->regContents.state.uts.ts32.__edx);
+  x86Registers[REG_DX].valptr = (void *) &(ws->regContents.state.uts.ts32.__edx);
+
+  x86Registers[REG_SP].valptr = (void *) &(ws->regContents.state.uts.ts32.__esp);
+  x86Registers[REG_BP].valptr = (void *) &(ws->regContents.state.uts.ts32.__ebp);
+  x86Registers[REG_SI].valptr = (void *) &(ws->regContents.state.uts.ts32.__esi);
+  x86Registers[REG_DI].valptr = (void *) &(ws->regContents.state.uts.ts32.__edi);
+
+  x86Registers[REG_IP].valptr = (void *) &(ws->regContents.state.uts.ts32.__eip);
+  x86Registers[REG_FLAGS].valptr = (void *) &(ws->regContents.state.uts.ts32.__eflags);
+
 #ifdef FIXME
-  x86Registers[REG_EAX].valptr = (void *) &(ws->regContents.Regs.r_eax);
-  x86Registers[REG_EBX].valptr = (void *) &(ws->regContents.Regs.r_ebx);
-  x86Registers[REG_ECX].valptr = (void *) &(ws->regContents.Regs.r_ecx);
-  x86Registers[REG_EDX].valptr = (void *) &(ws->regContents.Regs.r_edx);
-  x86Registers[REG_ESP].valptr = (void *) &(ws->regContents.Regs.r_esp);
-  x86Registers[REG_EBP].valptr = (void *) &(ws->regContents.Regs.r_ebp);
-  x86Registers[REG_ESI].valptr = (void *) &(ws->regContents.Regs.r_esi);
-  x86Registers[REG_EDI].valptr = (void *) &(ws->regContents.Regs.r_edi);
-  x86Registers[REG_DS].valptr = (void *) &(ws->regContents.Regs.r_ds);
-  x86Registers[REG_ES].valptr = (void *) &(ws->regContents.Regs.r_es);
-  x86Registers[REG_FS].valptr = (void *) &(ws->regContents.Regs.r_fs);
-  x86Registers[REG_GS].valptr = (void *) &(ws->regContents.Regs.r_gs);
-  x86Registers[REG_SS].valptr = (void *) &(ws->regContents.Regs.r_ss);
-  x86Registers[REG_CS].valptr = (void *) &(ws->regContents.Regs.r_cs);
-  x86Registers[REG_EIP].valptr = (void *) &(ws->regContents.Regs.r_eip);
-  x86Registers[REG_EFLAGS].valptr = (void *) &(ws->regContents.Regs.r_eflags);
-
-  x86Registers[REG_AH].valptr = (void *) &(ws->regContents.Regs.r_eax);
-  x86Registers[REG_AL].valptr = (void *) &(ws->regContents.Regs.r_eax);
-  x86Registers[REG_AX].valptr = (void *) &(ws->regContents.Regs.r_eax);
-
-  x86Registers[REG_BH].valptr = (void *) &(ws->regContents.Regs.r_ebx);
-  x86Registers[REG_BL].valptr = (void *) &(ws->regContents.Regs.r_ebx);
-  x86Registers[REG_BX].valptr = (void *) &(ws->regContents.Regs.r_ebx);
-
-  x86Registers[REG_CH].valptr = (void *) &(ws->regContents.Regs.r_ecx);
-  x86Registers[REG_CL].valptr = (void *) &(ws->regContents.Regs.r_ecx);
-  x86Registers[REG_CX].valptr = (void *) &(ws->regContents.Regs.r_ecx);
-
-  x86Registers[REG_DH].valptr = (void *) &(ws->regContents.Regs.r_edx);
-  x86Registers[REG_DL].valptr = (void *) &(ws->regContents.Regs.r_edx);
-  x86Registers[REG_DX].valptr = (void *) &(ws->regContents.Regs.r_edx);
-
-  x86Registers[REG_SP].valptr = (void *) &(ws->regContents.Regs.r_esp);
-  x86Registers[REG_BP].valptr = (void *) &(ws->regContents.Regs.r_ebp);
-  x86Registers[REG_SI].valptr = (void *) &(ws->regContents.Regs.r_esi);
-  x86Registers[REG_DI].valptr = (void *) &(ws->regContents.Regs.r_edi);
-
-  x86Registers[REG_IP].valptr = (void *) &(ws->regContents.Regs.r_eip);
-  x86Registers[REG_FLAGS].valptr = (void *) &(ws->regContents.Regs.r_eflags);
-
+// See this: ufs.fs32._fpu
   /*
    * Floating point unit data registers
    */
@@ -121,7 +157,8 @@ x86initRegistersDebug(struct debugWorkspace *ws)
   for (ii = 0; ii < FPU_NUM_DATA_REGS; ++ii)
   {
     x86Registers[REG_ST0 + ii].valptr =
-      (void *) &(ws->regContents.fpRegs.fpr_acc[ii][0]);
+      (void *) &(ws->regContents.state.ufs.fs32._fpu
+//fpr_acc[ii][0]);
   }
 
   /*

@@ -1,2 +1,6 @@
 .deps
 autom4te.cache
+a.out.dSYM
+# This is an architecture-dependent symlink
+libDebug/arch/ix86/source/os-x86.c
+Makefile

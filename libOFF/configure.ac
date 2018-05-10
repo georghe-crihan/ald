@@ -61,6 +61,8 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
 
+AC_CHECK_SIZEOF(size_t)
+
 dnl Checks for header files.
 AC_HEADER_STDC
 

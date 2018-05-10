@@ -38,3 +38,6 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
+
+/* sizeof(size_t): this is used to check if we're on a 64-bit system. */
+#undef SIZEOF_SIZE_T
