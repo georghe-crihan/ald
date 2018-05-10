@@ -12,7 +12,7 @@ AC_CANONICAL_HOST
 
 case "${host_cpu}" in
 changequote(,)
-  i[3456]86)
+  i[3456]86|x86_64)
 changequote([,])
     arch_frag=ix86
     text_frag=x86

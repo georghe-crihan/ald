@@ -123,6 +123,17 @@ changequote([,])
     AC_DEFINE(DWORD, 4,
               [Define to number of bytes in two machine words])
     ;;
+# FIXME: this has to be fixed for AMD64 eventually.
+changequote(,)
+  *x86_64*)
+changequote([,])
+    AC_DEFINE(WORDSIZE, 2,
+              [Define to number of bytes in one machine word])
+    AC_DEFINE(HALFWORD, 1,
+              [Define to number of bytes in half a machine word])
+    AC_DEFINE(DWORD, 4,
+              [Define to number of bytes in two machine words])
+    ;;
   *)
     AC_MSG_WARN([[*****************************************************]])
     AC_MSG_WARN([[Unknown word size for this architecture: ${host}]])

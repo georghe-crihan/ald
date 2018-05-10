@@ -36,6 +36,27 @@
 /* Define to 1 if you have the `vprintf' function. */
 #undef HAVE_VPRINTF
 
+/* Define if you are running *BSD */
+#undef OS_BSD
+
+/* Define if you are running Darwin */
+#undef OS_DARWIN
+
+/* Define if you are running FreeBSD */
+#undef OS_FREEBSD
+
+/* Define if you are running Linux */
+#undef OS_LINUX
+
+/* Define if you are running NetBSD */
+#undef OS_NETBSD
+
+/* Define if you are running OpenBSD */
+#undef OS_OPENBSD
+
+/* Name of package */
+#undef PACKAGE
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
@@ -48,14 +69,23 @@
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
 
+/* The size of `size_t', as computed by sizeof. */
+#undef SIZEOF_SIZE_T
+
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
+
+/* Version number of package */
+#undef VERSION
 
 /* Define to `unsigned short' if <sys/types.h> does not define. */
 #undef uint16_t
@@ -68,10 +98,3 @@
 
 /* Define to `unsigned char' if <sys/types.h> does not define. */
 #undef uint8_t
-
-/* Define if Darwin/OS X */
-#undef OS_DARWIN
-
-/* sizeof(size_t): this is used to check if we're on a 64-bit system */
-#undef SIZEOF_SIZE_T
-
