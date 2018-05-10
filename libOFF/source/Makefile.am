@@ -9,7 +9,8 @@ libOFF_a_SOURCES = \
   version.c
 
 if HAVE_MACHO 
-# FIXME
+libOFF_a_SOURCES += \
+  fmt_macho.c
 else
 libOFF_a_SOURCES += \
   fmt_aout.c        \

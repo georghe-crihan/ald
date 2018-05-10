@@ -49,11 +49,11 @@
 
 #elif defined(OS_DARWIN)
 
-// FIXME!!!!
+#define PtraceRead(pid, addr, data) \
+  darwin_PtraceRead(pid,addr, data)
 
-#define PtraceRead(pid,addr, data) (0)
-
-#define PtraceWrite(pid, addr, data) (0)
+#define PtraceWrite(pid, addr, data) \
+  darwin_PtraceWrite(pid, addr, data)
 
 #else
 

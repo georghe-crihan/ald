@@ -20,7 +20,7 @@
 #include "cfgOFF.h"
 
 #if defined(OS_DARWIN)
-// FIXME
+#include "fmt_macho.h"
 #else
 #include "fmt_aout.h"
 #include "fmt_elf.h"
@@ -60,17 +60,18 @@ initOFF()
   memset(ws, '\0', sizeof(struct offWorkspace));
 
 #if defined(OS_DARWIN)
-// FIXME
-#else
+
   /*
-   * Initialize a.out workspace
+   * Initialize macho workspace
    */
-  ws->aoutWorkspace_p = initAOUT();
-  if (!ws->aoutWorkspace_p)
+  ws->machoWorkspace_p = initMACHO();
+  if (!ws->machoWorkspace_p)
   {
     termOFF(ws);
     return (0);
   }
+
+#else
 
   /*
    * Initialize elf workspace
@@ -112,9 +113,8 @@ termOFF(struct offWorkspace *ws)
     return;
 
 #if defined(OS_DARWIN)
-
-// FIXME
-
+  if (ws->machoWorkspace_p)
+    termMACHO(ws->machoWorkspace_p);
 #else
   if (ws->aoutWorkspace_p)
     termAOUT(ws->aoutWorkspace_p);
@@ -152,8 +152,36 @@ identifyOFF(struct offWorkspace *ws, void *ptr, size_t size,
 {
   int ret;
 #if defined(OS_DARWIN)
-// FIXME
+  struct machoParameters machoParams;
+
+  /*
+   * Check if file is MACHO
+   */
+  ret = checkMACHO(ws->machoWorkspace_p,
+                 ptr,
+                 size,
+                 &machoParams,
+                 str,
+                 ws->platformEndian);
+
+  if (ret < 0)
+    return (ret); /* there is an error message in str */
+  else if (ret == 1)
+  {
+    /*
+     * The file is MACHO
+     */
+    params->virtualFileAddress = machoParams.virtualFileAddress;
+    params->virtualEntryPoint = machoParams.virtualEntryPoint;
+    params->entryPoint = machoParams.entryPoint;
+
+    ws->fileType = OFF_TYPE_MACHO;
+
+    return (OFF_TYPE_ELF);
+  }
+
 #else
+
   struct aoutParameters aoutParams;
   struct elfParameters elfParams;
 
@@ -227,7 +255,12 @@ loadSymbolsOFF(struct offWorkspace *ws)
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      return (loadSymbolsMACHO(ws->machoWorkspace_p));
+
+      break;
+    }
 #else
     case OFF_TYPE_ELF:
     {
@@ -262,7 +295,12 @@ unloadSymbolsOFF(struct offWorkspace *ws)
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      unloadSymbolsMACHO(ws->machoWorkspace_p);
+
+      break;
+    }
 #else
     case OFF_TYPE_ELF:
     {
@@ -301,7 +339,7 @@ findSectionOFF(struct offWorkspace *ws, char *name,
 {
   int ret;
 #if defined(OS_DARWIN)
-// FIXME
+  struct machoSectionInfo machoSecInfo;
 #else
   struct elfSectionInfo elfSecInfo;
   struct aoutSectionInfo aoutSecInfo;
@@ -312,7 +350,23 @@ findSectionOFF(struct offWorkspace *ws, char *name,
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      ret = findSectionMACHO(ws->machoWorkspace_p,
+                           name,
+                           address,
+                           &machoSecInfo);
+
+      if (ret)
+      {
+        secinfo->name = machoSecInfo.name;
+        secinfo->address = machoSecInfo.address;
+        secinfo->size = machoSecInfo.size;
+        secinfo->offset = machoSecInfo.offset;
+      }
+
+      break;
+    } /* case OFF_TYPE_MACHO */
 #else
     case OFF_TYPE_ELF:
     {
@@ -380,7 +434,7 @@ findSymbolOFF(struct offWorkspace *ws, char *name,
 {
   int ret;
 #if defined(OS_DARWIN)
-// FIXME
+  struct machoSymbolInfo machoSymInfo;
 #else
   struct elfSymbolInfo elfSymInfo;
 #endif
@@ -390,7 +444,23 @@ findSymbolOFF(struct offWorkspace *ws, char *name,
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      ret = findSymbolMACHO(ws->machoWorkspace_p,
+                          name,
+                          address,
+                          &machoSymInfo);
+
+      if (ret)
+      {
+        syminfo->address = machoSymInfo.address;
+        syminfo->offset = machoSymInfo.offset;
+        syminfo->name = machoSymInfo.name;
+        syminfo->size = machoSymInfo.size;
+      }
+
+      break;
+    }
 #else
     case OFF_TYPE_ELF:
     {
@@ -443,7 +513,12 @@ printHeaderOFF(struct offWorkspace *ws,
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      printHeaderMACHO(ws->machoWorkspace_p, callback, args);
+
+      break;
+    }
 #else
     case OFF_TYPE_ELF:
     {
@@ -493,7 +568,12 @@ printSectionInfoOFF(struct offWorkspace *ws,
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      printSectionInfoMACHO(ws->machoWorkspace_p, sname, callback, args);
+
+      break;
+    }
 #else
     case OFF_TYPE_ELF:
     {
@@ -545,7 +625,12 @@ printSymbolsOFF(struct offWorkspace *ws,
   switch (ws->fileType)
   {
 #if defined(OS_DARWIN)
-// FIXME
+    case OFF_TYPE_MACHO:
+    {
+      printSymbolsMACHO(ws->machoWorkspace_p, name, callback, args);
+
+      break;
+    }
 #else
     case OFF_TYPE_ELF:
     {

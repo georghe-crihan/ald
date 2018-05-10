@@ -40,6 +40,15 @@
 #include "alloc.h"
 #include "Strn.h"
 
+// FIXME: Darwin ptrace() replacements
+int darwin_PtraceRead(pid_t pid, caddr_t addr, int data) {
+  return 0;
+}
+
+int darwin_PtraceWrite(pid_t pid, caddr_t addr, int data) {
+  return 0;
+}
+
 /*
  * Local: structure which will contain register info
  */

@@ -18,7 +18,10 @@
 
 #if defined(OS_DARWIN)
 
-// FIXME
+#ifndef INCLUDED_libOFF_fmt_macho_h
+#include "fmt_macho.h"       /* struct machoWorkspace */
+#define INCLUDED_libOFF_fmt_macho_h
+#endif
 
 #else
 
@@ -48,8 +51,12 @@ struct offParameters
 
 struct offWorkspace
 {
+#if defined(OS_DARWIN)
+  struct machoWorkspace *machoWorkspace_p;/* macho workspace */
+#else
   struct aoutWorkspace *aoutWorkspace_p;  /* a.out workspace */
   struct elfWorkspace *elfWorkspace_p;    /* elf workspace */
+#endif
 
   int platformEndian;                     /* endianness of platform */
   int fileType;                           /* object file type (OFF_TYPE_xxx) */
@@ -85,6 +92,7 @@ struct offSymbolInfo
 #define OFF_TYPE_UNKNOWN    1  /* unknown object format */
 #define OFF_TYPE_AOUT       2  /* a.out format */
 #define OFF_TYPE_ELF        3  /* executable and linkable format (ELF) */
+#define OFF_TYPE_MACHO      4  /* Darwin/OS X MACHO executable */
 
 /*
  * Endian types

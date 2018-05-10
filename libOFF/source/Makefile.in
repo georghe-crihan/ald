@@ -91,9 +91,10 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@HAVE_MACHO_TRUE@am__append_1 = \
+@HAVE_MACHO_TRUE@  fmt_macho.c
 
-# FIXME
-@HAVE_MACHO_FALSE@am__append_1 = \
+@HAVE_MACHO_FALSE@am__append_2 = \
 @HAVE_MACHO_FALSE@  fmt_aout.c        \
 @HAVE_MACHO_FALSE@  fmt_elf.c
 
@@ -117,11 +118,12 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libOFF_a_AR = $(AR) $(ARFLAGS)
 libOFF_a_LIBADD =
-am__libOFF_a_SOURCES_DIST = libOFF.c symbols.c version.c fmt_aout.c \
-	fmt_elf.c
-@HAVE_MACHO_FALSE@am__objects_1 = fmt_aout.$(OBJEXT) fmt_elf.$(OBJEXT)
+am__libOFF_a_SOURCES_DIST = libOFF.c symbols.c version.c fmt_macho.c \
+	fmt_aout.c fmt_elf.c
+@HAVE_MACHO_TRUE@am__objects_1 = fmt_macho.$(OBJEXT)
+@HAVE_MACHO_FALSE@am__objects_2 = fmt_aout.$(OBJEXT) fmt_elf.$(OBJEXT)
 am_libOFF_a_OBJECTS = libOFF.$(OBJEXT) symbols.$(OBJEXT) \
-	version.$(OBJEXT) $(am__objects_1)
+	version.$(OBJEXT) $(am__objects_1) $(am__objects_2)
 libOFF_a_OBJECTS = $(am_libOFF_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -139,8 +141,8 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/fmt_aout.Po ./$(DEPDIR)/fmt_elf.Po \
-	./$(DEPDIR)/libOFF.Po ./$(DEPDIR)/symbols.Po \
-	./$(DEPDIR)/version.Po
+	./$(DEPDIR)/fmt_macho.Po ./$(DEPDIR)/libOFF.Po \
+	./$(DEPDIR)/symbols.Po ./$(DEPDIR)/version.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -281,7 +283,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libOFF.a
-libOFF_a_SOURCES = libOFF.c symbols.c version.c $(am__append_1)
+libOFF_a_SOURCES = libOFF.c symbols.c version.c $(am__append_1) \
+	$(am__append_2)
 all: all-am
 
 .SUFFIXES:
@@ -332,6 +335,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmt_aout.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmt_elf.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmt_macho.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libOFF.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/symbols.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/version.Po@am__quote@ # am--include-marker
@@ -482,6 +486,7 @@ clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/fmt_aout.Po
 	-rm -f ./$(DEPDIR)/fmt_elf.Po
+	-rm -f ./$(DEPDIR)/fmt_macho.Po
 	-rm -f ./$(DEPDIR)/libOFF.Po
 	-rm -f ./$(DEPDIR)/symbols.Po
 	-rm -f ./$(DEPDIR)/version.Po
@@ -532,6 +537,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/fmt_aout.Po
 	-rm -f ./$(DEPDIR)/fmt_elf.Po
+	-rm -f ./$(DEPDIR)/fmt_macho.Po
 	-rm -f ./$(DEPDIR)/libOFF.Po
 	-rm -f ./$(DEPDIR)/symbols.Po
 	-rm -f ./$(DEPDIR)/version.Po
